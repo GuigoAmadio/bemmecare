@@ -11,6 +11,8 @@ import {
   Settings,
   Heart,
   LogOut,
+  Users,
+  Store,
 } from "lucide-react";
 import { clsx } from "clsx";
 import { useAuth } from "@/hooks/useAuth";
@@ -36,6 +38,16 @@ const menuItems = [
     name: "Produtos",
     icon: Package,
     href: "/dashboard/produtos",
+  },
+  {
+    name: "Ecommerce - Clientes",
+    icon: Users,
+    href: "/dashboard/ecommerce-clientes",
+  },
+  {
+    name: "Ecommerce - Produtos",
+    icon: Store,
+    href: "/dashboard/ecommerce-produtos",
   },
   {
     name: "Relatórios",

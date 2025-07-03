@@ -53,7 +53,10 @@ export async function loginAction(data: LoginInput) {
     console.log("✅ BemMeCare - Login bem-sucedido!");
     console.log("- Token recebido:", !!(responseData as any)?.token);
     console.log("- Client ID recebido:", (responseData as any)?.client_id);
-    console.log("- Refresh token recebido:", !!(responseData as any)?.refresh_token);
+    console.log(
+      "- Refresh token recebido:",
+      !!(responseData as any)?.refresh_token
+    );
     console.log("- User recebido:", !!(responseData as any)?.user);
 
     // Verificar se temos os dados necessários
@@ -161,17 +164,20 @@ export async function logoutAction() {
 export async function getAuthUser(): Promise<User | null> {
   try {
     const result = await serverGet<AuthMeResponse>("/auth/me");
-    
-    if (!result.data) {
+
+    // Verificar wrapper duplo
+    const userData = (result.data as any)?.data || result.data;
+
+    if (!userData) {
       return null;
     }
-    
+
     // Transformar client_id em clientId para compatibilidade
     const user: User = {
-      ...result.data,
-      clientId: result.data.client_id || result.data.clientId || '',
+      ...userData,
+      clientId: userData.client_id || userData.clientId || "",
     };
-    
+
     return user;
   } catch (error: unknown) {
     console.error("Erro ao verificar autenticação:", error);
@@ -219,19 +225,22 @@ export async function refreshTokenAction() {
       }
     );
 
-    if (!result.data) {
+    // Verificar wrapper duplo
+    const tokenData = (result.data as any)?.data || result.data;
+
+    if (!tokenData) {
       throw new Error("Dados não recebidos do servidor");
     }
 
     // Atualizar cookies com novos tokens
-    cookieStore.set("auth_token", result.data.token, {
+    cookieStore.set("auth_token", tokenData.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7, // 7 dias
     });
 
-    cookieStore.set("refresh_token", result.data.refresh_token, {
+    cookieStore.set("refresh_token", tokenData.refresh_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",

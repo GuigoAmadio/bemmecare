@@ -50,12 +50,15 @@ export interface DashboardStats {
     monthlyRevenue: number;
   };
   topSellingProducts: TopSellingProduct[];
-  consultations: {
-    today: number;
-    thisMonth: number;
-    todayAppointments: TodayAppointment[];
-    monthlyRevenue: number;
+  today: {
+    count: number;
+    revenue: number;
   };
+  month: {
+    count: number;
+    revenue: number;
+  };
+  todayAppointments: TodayAppointment[];
   overview: {
     totalProducts: number;
     lowStockProducts: number;
@@ -129,7 +132,7 @@ export interface ProductFilters {
   priceMax?: number;
   inStock?: boolean;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
 }
 
 export interface ProductStats {
@@ -153,7 +156,7 @@ export interface Appointment {
   title?: string;
   startTime: string;
   endTime: string;
-  status: 'SCHEDULED' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED' | 'NO_SHOW';
+  status: "SCHEDULED" | "CONFIRMED" | "COMPLETED" | "CANCELLED" | "NO_SHOW";
   description?: string;
   service?: {
     id: string;
@@ -301,25 +304,25 @@ export interface ProductTableProps {
 
 // Enums para status
 export enum AppointmentStatus {
-  SCHEDULED = 'SCHEDULED',
-  CONFIRMED = 'CONFIRMED',
-  COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED',
-  NO_SHOW = 'NO_SHOW'
+  SCHEDULED = "SCHEDULED",
+  CONFIRMED = "CONFIRMED",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
+  NO_SHOW = "NO_SHOW",
 }
 
 export enum OrderStatus {
-  PENDING = 'PENDING',
-  CONFIRMED = 'CONFIRMED',
-  PROCESSING = 'PROCESSING',
-  SHIPPED = 'SHIPPED',
-  DELIVERED = 'DELIVERED',
-  CANCELLED = 'CANCELLED'
+  PENDING = "PENDING",
+  CONFIRMED = "CONFIRMED",
+  PROCESSING = "PROCESSING",
+  SHIPPED = "SHIPPED",
+  DELIVERED = "DELIVERED",
+  CANCELLED = "CANCELLED",
 }
 
 export enum PaymentStatus {
-  PENDING = 'PENDING',
-  PAID = 'PAID',
-  FAILED = 'FAILED',
-  REFUNDED = 'REFUNDED'
+  PENDING = "PENDING",
+  PAID = "PAID",
+  FAILED = "FAILED",
+  REFUNDED = "REFUNDED",
 }

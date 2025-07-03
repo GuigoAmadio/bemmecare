@@ -7,8 +7,7 @@ const API_CONFIG = {
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL ||
     "http://localhost:3000/api/v1", // Backend NestJS na porta 3000
-  defaultClientId:
-    process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID || "bemmecare", // ID específico da BemMeCare
+  defaultClientId: process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID || "bemmecare", // ID específico da BemMeCare
 };
 
 // Função para obter headers em Server Actions
@@ -61,11 +60,29 @@ export async function serverFetch<T>(
     },
   });
 
+  console.log("📡 [server-api] Resposta HTTP:", {
+    url: `${API_CONFIG.baseURL}${url}`,
+    status: response.status,
+    statusText: response.statusText,
+    ok: response.ok,
+    headers: Object.fromEntries(response.headers.entries()),
+  });
+
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    const errorText = await response.text();
+    console.error("❌ [server-api] Erro HTTP:", {
+      status: response.status,
+      statusText: response.statusText,
+      body: errorText,
+    });
+    throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
   }
 
   const data = await response.json();
+  console.log(
+    "📦 [server-api] Dados recebidos:",
+    JSON.stringify(data, null, 2)
+  );
 
   return {
     success: true,
@@ -94,6 +111,16 @@ export async function serverPut<T>(
 ): Promise<ApiResponse<T>> {
   return serverFetch<T>(url, {
     method: "PUT",
+    body: data ? JSON.stringify(data) : undefined,
+  });
+}
+
+export async function serverPatch<T>(
+  url: string,
+  data?: unknown
+): Promise<ApiResponse<T>> {
+  return serverFetch<T>(url, {
+    method: "PATCH",
     body: data ? JSON.stringify(data) : undefined,
   });
 }

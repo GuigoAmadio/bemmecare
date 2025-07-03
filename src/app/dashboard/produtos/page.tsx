@@ -13,12 +13,12 @@ import {
   Download,
   Trash2,
 } from "lucide-react";
-import { 
+import {
   getProducts,
   getProductStats,
-  createProduct, 
-  updateProduct, 
-  deleteProduct
+  createProduct,
+  updateProduct,
+  deleteProduct,
 } from "@/actions/produtos";
 import type { Product, ProductFilters, ProductStats } from "@/types";
 
@@ -29,7 +29,7 @@ interface ProductFormData {
   stock: number;
   minStock: number;
   category: string;
-  status: 'ativo' | 'inativo';
+  status: "ativo" | "inativo";
 }
 
 interface LocalProductFilters extends ProductFilters {
@@ -48,35 +48,35 @@ export default function ProdutosPage() {
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState<ProductFormData>({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     price: 0,
     stock: 0,
     minStock: 5,
-    category: '',
-    status: 'ativo'
+    category: "",
+    status: "ativo",
   });
-  
+
   // Filtros
   const [filters, setFilters] = useState<LocalProductFilters>({
-    search: '',
-    category: '',
-    status: '',
+    search: "",
+    category: "",
+    status: "",
     minPrice: undefined,
     maxPrice: undefined,
     lowStock: false,
     page: 1,
-    limit: 10
+    limit: 10,
   });
 
   const categories = [
-    'Suplementos',
-    'Beleza',
-    'Digestivo',
-    'Vitaminas',
-    'Minerais',
-    'Probióticos',
-    'Outros'
+    "Suplementos",
+    "Beleza",
+    "Digestivo",
+    "Vitaminas",
+    "Minerais",
+    "Probióticos",
+    "Outros",
   ];
 
   // Carregar dados
@@ -87,22 +87,23 @@ export default function ProdutosPage() {
   const loadData = async () => {
     try {
       setLoading(true);
-      
+
       // Carregar dados reais do backend
       const [productsData, metricsData] = await Promise.all([
         getProducts({ page: filters.page, limit: filters.limit }, filters),
-        getProductStats()
+        getProductStats(),
       ]);
-      
+      console.log("productsData", productsData);
+      console.log("metricsData", metricsData);
       if (productsData.success && productsData.data) {
         setProducts(productsData.data.data || []);
       }
-      
+
       if (metricsData.success && metricsData.data) {
         setMetrics(metricsData.data);
       }
     } catch (error) {
-      console.error('Erro ao carregar dados:', error);
+      console.error("Erro ao carregar dados:", error);
     } finally {
       setLoading(false);
     }
@@ -116,13 +117,13 @@ export default function ProdutosPage() {
       } else {
         await createProduct(formData);
       }
-      
+
       setShowModal(false);
       setEditingProduct(null);
       resetForm();
       loadData();
     } catch (error) {
-      console.error('Erro ao salvar produto:', error);
+      console.error("Erro ao salvar produto:", error);
     }
   };
 
@@ -130,36 +131,36 @@ export default function ProdutosPage() {
     setEditingProduct(product);
     setFormData({
       name: product.name,
-      description: product.description || '',
+      description: product.description || "",
       price: product.price,
       stock: product.stock,
       minStock: 5,
-      category: product.category?.name || '',
-      status: product.isActive ? 'ativo' : 'inativo'
+      category: product.category?.name || "",
+      status: product.isActive ? "ativo" : "inativo",
     });
     setShowModal(true);
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Tem certeza que deseja excluir este produto?')) {
+    if (confirm("Tem certeza que deseja excluir este produto?")) {
       try {
         await deleteProduct(id);
         loadData();
       } catch (error) {
-        console.error('Erro ao excluir produto:', error);
+        console.error("Erro ao excluir produto:", error);
       }
     }
   };
 
   const resetForm = () => {
     setFormData({
-      name: '',
-      description: '',
+      name: "",
+      description: "",
       price: 0,
       stock: 0,
       minStock: 5,
-      category: '',
-      status: 'ativo'
+      category: "",
+      status: "ativo",
     });
   };
 
@@ -170,13 +171,22 @@ export default function ProdutosPage() {
   };
 
   const getStockStatus = (stock: number, minStock: number) => {
-    if (stock === 0) return { color: "text-red-600", label: "Sem estoque", bg: "bg-red-100" };
-    if (stock <= minStock) return { color: "text-yellow-600", label: "Estoque baixo", bg: "bg-yellow-100" };
+    if (stock === 0)
+      return { color: "text-red-600", label: "Sem estoque", bg: "bg-red-100" };
+    if (stock <= minStock)
+      return {
+        color: "text-yellow-600",
+        label: "Estoque baixo",
+        bg: "bg-yellow-100",
+      };
     return { color: "text-green-600", label: "Em estoque", bg: "bg-green-100" };
   };
 
-  const handleFilterChange = (key: keyof LocalProductFilters, value: string | boolean | number | undefined) => {
-    setFilters(prev => ({ ...prev, [key]: value, page: 1 }));
+  const handleFilterChange = (
+    key: keyof LocalProductFilters,
+    value: string | boolean | number | undefined
+  ) => {
+    setFilters((prev) => ({ ...prev, [key]: value, page: 1 }));
   };
 
   if (loading && !products.length) {
@@ -197,7 +207,7 @@ export default function ProdutosPage() {
             Gerencie estoque e vendas de produtos
           </p>
         </div>
-        <button 
+        <button
           onClick={openAddModal}
           className="bg-primary text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-primary/90 transition-colors"
         >
@@ -212,9 +222,14 @@ export default function ProdutosPage() {
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Valor Total Vendido</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Valor Total Vendido
+                </p>
                 <p className="text-2xl font-bold text-gray-900">
-                  R$ {metrics.totalSoldValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  R${" "}
+                  {(metrics?.totalSoldValue || 0).toLocaleString("pt-BR", {
+                    minimumFractionDigits: 2,
+                  })}
                 </p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
@@ -226,8 +241,12 @@ export default function ProdutosPage() {
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Quantidade Vendida</p>
-                <p className="text-2xl font-bold text-gray-900">{metrics.totalSoldQuantity}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Quantidade Vendida
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {metrics.totalSoldQuantity}
+                </p>
               </div>
               <div className="bg-blue-100 p-3 rounded-full">
                 <ShoppingCart className="h-6 w-6 text-blue-600" />
@@ -238,8 +257,12 @@ export default function ProdutosPage() {
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Produtos Ativos</p>
-                <p className="text-2xl font-bold text-green-600">{metrics.totalProducts}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Produtos Ativos
+                </p>
+                <p className="text-2xl font-bold text-green-600">
+                  {metrics.totalProducts}
+                </p>
               </div>
               <div className="bg-green-100 p-3 rounded-full">
                 <Package className="h-6 w-6 text-green-600" />
@@ -250,8 +273,12 @@ export default function ProdutosPage() {
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Estoque Baixo</p>
-                <p className="text-2xl font-bold text-yellow-600">{metrics.lowStockCount}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Estoque Baixo
+                </p>
+                <p className="text-2xl font-bold text-yellow-600">
+                  {metrics.lowStockCount}
+                </p>
               </div>
               <div className="bg-yellow-100 p-3 rounded-full">
                 <AlertTriangle className="h-6 w-6 text-yellow-600" />
@@ -270,25 +297,27 @@ export default function ProdutosPage() {
               type="text"
               placeholder="Buscar produtos..."
               value={filters.search}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
+              onChange={(e) => handleFilterChange("search", e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
             />
           </div>
-          
+
           <select
             value={filters.category}
-            onChange={(e) => handleFilterChange('category', e.target.value)}
+            onChange={(e) => handleFilterChange("category", e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
           >
             <option value="">Todas as categorias</option>
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
 
           <select
             value={filters.status}
-            onChange={(e) => handleFilterChange('status', e.target.value)}
+            onChange={(e) => handleFilterChange("status", e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
           >
             <option value="">Todos os status</option>
@@ -301,7 +330,7 @@ export default function ProdutosPage() {
               type="checkbox"
               id="lowStock"
               checked={filters.lowStock}
-              onChange={(e) => handleFilterChange('lowStock', e.target.checked)}
+              onChange={(e) => handleFilterChange("lowStock", e.target.checked)}
               className="rounded border-gray-300 text-primary focus:ring-primary"
             />
             <label htmlFor="lowStock" className="text-sm text-gray-700">
@@ -329,13 +358,27 @@ export default function ProdutosPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Produto</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Categoria</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Preço</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Estoque</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Vendidos</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Status</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-900">Ações</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Produto
+                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Categoria
+                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Preço
+                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Estoque
+                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Vendidos
+                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Status
+                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-900">
+                  Ações
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -348,7 +391,9 @@ export default function ProdutosPage() {
                   >
                     <td className="py-4 px-6">
                       <div>
-                        <div className="font-medium text-gray-900">{product.name}</div>
+                        <div className="font-medium text-gray-900">
+                          {product.name}
+                        </div>
                         {product.description && (
                           <div className="text-sm text-gray-500 truncate max-w-xs">
                             {product.description}
@@ -358,12 +403,15 @@ export default function ProdutosPage() {
                     </td>
                     <td className="py-4 px-6">
                       <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700">
-                        {product.category?.name || 'Sem categoria'}
+                        {product.category?.name || "Sem categoria"}
                       </span>
                     </td>
                     <td className="py-4 px-6">
                       <div className="font-medium text-gray-900">
-                        R$ {product.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                        R${" "}
+                        {(product.price || 0).toLocaleString("pt-BR", {
+                          minimumFractionDigits: 2,
+                        })}
                       </div>
                     </td>
                     <td className="py-4 px-6">
@@ -375,9 +423,7 @@ export default function ProdutosPage() {
                           <AlertTriangle className="h-4 w-4 text-yellow-500" />
                         )}
                       </div>
-                      <div className="text-xs text-gray-500">
-                        Min: 5
-                      </div>
+                      <div className="text-xs text-gray-500">Min: 5</div>
                     </td>
                     <td className="py-4 px-6 text-gray-600">
                       {product.salesStats?.totalSold || 0}
@@ -386,11 +432,11 @@ export default function ProdutosPage() {
                       <span
                         className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                           product.isActive
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-red-100 text-red-700'
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
                         }`}
                       >
-                        {product.isActive ? 'Ativo' : 'Inativo'}
+                        {product.isActive ? "Ativo" : "Inativo"}
                       </span>
                     </td>
                     <td className="py-4 px-6">
@@ -432,7 +478,7 @@ export default function ProdutosPage() {
           <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-semibold text-gray-900">
-                {editingProduct ? 'Editar Produto' : 'Novo Produto'}
+                {editingProduct ? "Editar Produto" : "Novo Produto"}
               </h3>
               <button
                 onClick={() => setShowModal(false)}
@@ -451,7 +497,9 @@ export default function ProdutosPage() {
                   type="text"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, name: e.target.value }))
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
@@ -462,7 +510,12 @@ export default function ProdutosPage() {
                 </label>
                 <textarea
                   value={formData.description}
-                  onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
@@ -479,7 +532,12 @@ export default function ProdutosPage() {
                     min="0"
                     required
                     value={formData.price}
-                    onChange={(e) => setFormData(prev => ({ ...prev, price: parseFloat(e.target.value) || 0 }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        price: parseFloat(e.target.value) || 0,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
@@ -491,12 +549,19 @@ export default function ProdutosPage() {
                   <select
                     required
                     value={formData.category}
-                    onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        category: e.target.value,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                   >
                     <option value="">Selecione...</option>
-                    {categories.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -512,7 +577,12 @@ export default function ProdutosPage() {
                     min="0"
                     required
                     value={formData.stock}
-                    onChange={(e) => setFormData(prev => ({ ...prev, stock: parseInt(e.target.value) || 0 }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        stock: parseInt(e.target.value) || 0,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
@@ -525,7 +595,12 @@ export default function ProdutosPage() {
                     type="number"
                     min="0"
                     value={formData.minStock}
-                    onChange={(e) => setFormData(prev => ({ ...prev, minStock: parseInt(e.target.value) || 0 }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        minStock: parseInt(e.target.value) || 0,
+                      }))
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
@@ -537,7 +612,12 @@ export default function ProdutosPage() {
                 </label>
                 <select
                   value={formData.status}
-                  onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as 'ativo' | 'inativo' }))}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      status: e.target.value as "ativo" | "inativo",
+                    }))
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
                   <option value="ativo">Ativo</option>
@@ -557,7 +637,7 @@ export default function ProdutosPage() {
                   type="submit"
                   className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
                 >
-                  {editingProduct ? 'Atualizar' : 'Criar'}
+                  {editingProduct ? "Atualizar" : "Criar"}
                 </button>
               </div>
             </form>

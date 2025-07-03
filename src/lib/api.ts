@@ -9,7 +9,8 @@ const API_CONFIG = {
     "http://localhost:3000/api/v1", // Backend NestJS na porta 3000
   timeout: 5000,
   defaultClientId:
-    process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID || "clnt_bemmecare", // ID específico da BemMeCare
+    process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID ||
+    "0ac8fc12-06c8-427e-acc4-663ee5245360",
 };
 
 // Cache simples para requisições

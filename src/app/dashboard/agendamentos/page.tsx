@@ -16,11 +16,11 @@ import {
 import {
   getWeekAppointments,
   getAppointmentStats,
-  getAppointmentCategories,
   createAppointment,
   updateAppointment,
   deleteAppointment,
 } from "@/actions/agendamentos";
+import { getCategories } from "@/actions/categorias";
 import type { Appointment, Category } from "@/types";
 
 interface TimeSlot {
@@ -31,7 +31,7 @@ interface TimeSlot {
 
 export default function AgendamentosPage() {
   const [currentWeek, setCurrentWeek] = useState(new Date());
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [appointments, setAppointmentsRaw] = useState<Appointment[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -54,6 +54,12 @@ export default function AgendamentosPage() {
     value: 0,
     notes: "",
   });
+
+  // Garante que appointments é sempre um array
+  const safeAppointments = Array.isArray(appointments) ? appointments : [];
+
+  // Garante que categories é sempre um array
+  const safeCategories = Array.isArray(categories) ? categories : [];
 
   // Gerar horários de 7h às 22h (intervalo de 30 min)
   const timeSlots: TimeSlot[] = [];
@@ -98,11 +104,11 @@ export default function AgendamentosPage() {
         const weekStart = weekDays[0].toISOString().split("T")[0];
         const appointmentsResult = await getWeekAppointments(weekStart);
         if (appointmentsResult.success && appointmentsResult.data) {
-          setAppointments(appointmentsResult.data);
+          setAppointmentsRaw(appointmentsResult.data);
         }
 
         // Carregar categorias
-        const categoriesResult = await getAppointmentCategories();
+        const categoriesResult = await getCategories();
         if (categoriesResult.success && categoriesResult.data) {
           setCategories(categoriesResult.data);
         }
@@ -182,8 +188,8 @@ export default function AgendamentosPage() {
 
   // Obter agendamentos para um dia/horário específico
   const getAppointmentForSlot = (date: string, time: string) => {
-    return appointments.find(
-      (apt) => apt.date === date && apt.startTime === time
+    return safeAppointments.find(
+      (apt) => apt.startTime === date && apt.startTime === time
     );
   };
 
@@ -191,16 +197,16 @@ export default function AgendamentosPage() {
   const openAppointmentModal = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
     setFormData({
-      title: appointment.title,
-      date: appointment.date,
-      startTime: appointment.startTime,
-      endTime: appointment.endTime,
-      categoryId: appointment.category.id,
-      clientName: appointment.client.name,
-      clientPhone: appointment.client.phone,
-      location: appointment.location,
-      value: appointment.value,
-      notes: appointment.notes || "",
+      title: appointment.title || "",
+      date: appointment.startTime || "",
+      startTime: appointment.startTime || "",
+      endTime: appointment.endTime || "",
+      categoryId: appointment.service?.category?.id || "",
+      clientName: appointment.user?.name || "",
+      clientPhone: appointment.user?.phone || "",
+      location: appointment.description || "",
+      value: (appointment as any).value || 0,
+      notes: (appointment as any).notes || "",
     });
     setIsEditing(false);
     setShowModal(true);
@@ -210,7 +216,7 @@ export default function AgendamentosPage() {
   const handleSave = () => {
     if (!formData.clientName || !formData.startTime) return;
 
-    const category = categories.find((c) => c.id === formData.categoryId);
+    const category = safeCategories.find((c) => c.id === formData.categoryId);
     if (!category) return;
 
     const newAppointment: Appointment = {
@@ -218,27 +224,34 @@ export default function AgendamentosPage() {
       title: formData.title,
       startTime: formData.startTime,
       endTime: formData.endTime,
-      date: formData.date,
-      category,
-      client: {
+      status: "SCHEDULED",
+      description: formData.location,
+      service: {
+        id: formData.categoryId,
+        name:
+          safeCategories.find((c) => c.id === formData.categoryId)?.name || "",
+        price: formData.value || 0,
+        category:
+          safeCategories.find((c) => c.id === formData.categoryId) || undefined,
+      },
+      user: {
+        id: "",
         name: formData.clientName,
+        email: "",
         phone: formData.clientPhone,
       },
-      location: formData.location,
-      value: formData.value,
-      notes: formData.notes,
     };
 
     if (selectedAppointment) {
       // Editar existente
-      setAppointments((prev) =>
+      setAppointmentsRaw((prev) =>
         prev.map((apt) =>
           apt.id === selectedAppointment.id ? newAppointment : apt
         )
       );
     } else {
       // Adicionar novo
-      setAppointments((prev) => [...prev, newAppointment]);
+      setAppointmentsRaw((prev) => [...prev, newAppointment]);
     }
 
     setShowModal(false);
@@ -249,7 +262,7 @@ export default function AgendamentosPage() {
   const handleDelete = () => {
     if (!selectedAppointment) return;
 
-    setAppointments((prev) =>
+    setAppointmentsRaw((prev) =>
       prev.filter((apt) => apt.id !== selectedAppointment.id)
     );
     setShowModal(false);
@@ -258,22 +271,23 @@ export default function AgendamentosPage() {
 
   // Estatísticas da semana
   const weekStats = {
-    total: appointments.filter((apt) => {
-      const aptDate = new Date(apt.date);
+    total: safeAppointments.filter((apt) => {
+      const aptDate = new Date(apt.startTime);
       return weekDays.some(
         (day) => day.toDateString() === aptDate.toDateString()
       );
     }).length,
-    revenue: appointments
+    revenue: safeAppointments
       .filter((apt) => {
-        const aptDate = new Date(apt.date);
+        const aptDate = new Date(apt.startTime);
         return weekDays.some(
           (day) => day.toDateString() === aptDate.toDateString()
         );
       })
-      .reduce((sum, apt) => sum + apt.value, 0),
-    today: appointments.filter(
-      (apt) => apt.date === new Date().toISOString().split("T")[0]
+      .reduce((sum, apt) => sum + (apt.service?.price || 0), 0),
+    today: safeAppointments.filter(
+      (apt) =>
+        apt.startTime.split("T")[0] === new Date().toISOString().split("T")[0]
     ).length,
   };
 
@@ -293,7 +307,7 @@ export default function AgendamentosPage() {
               date: new Date().toISOString().split("T")[0],
               startTime: "09:00",
               endTime: "10:00",
-              categoryId: categories[0].id,
+              categoryId: safeCategories.length > 0 ? safeCategories[0].id : "",
               clientName: "",
               clientPhone: "",
               location: "",
@@ -394,12 +408,12 @@ export default function AgendamentosPage() {
           Arraste para agendar:
         </h3>
         <div className="flex flex-wrap gap-3">
-          {categories.map((category) => (
+          {safeCategories.map((category) => (
             <div
               key={category.id}
               draggable
               onDragStart={(e) => handleDragStart(e, category)}
-              className={`px-4 py-2 rounded-lg border cursor-move hover:shadow-md transition-shadow ${category.bgColor} ${category.borderColor} ${category.color}`}
+              className={`px-4 py-2 rounded-lg border cursor-move hover:shadow-md transition-shadow ${category.color}`}
             >
               {category.name}
             </div>
@@ -459,15 +473,19 @@ export default function AgendamentosPage() {
                     {appointment ? (
                       <div
                         onClick={() => openAppointmentModal(appointment)}
-                        className={`w-full h-full rounded-lg p-2 cursor-pointer hover:shadow-md transition-shadow ${appointment.category.bgColor} ${appointment.category.borderColor} border`}
+                        className={`w-full h-full rounded-lg p-2 cursor-pointer hover:shadow-md transition-shadow ${
+                          appointment.service?.category?.color || ""
+                        }`}
                       >
                         <div
-                          className={`text-xs font-medium ${appointment.category.color}`}
+                          className={`text-xs font-medium ${
+                            appointment.service?.category?.color || ""
+                          }`}
                         >
                           {appointment.title}
                         </div>
                         <div className="text-xs text-gray-600 mt-1">
-                          {appointment.client.name}
+                          {appointment.user?.name || "-"}
                         </div>
                       </div>
                     ) : (
@@ -503,15 +521,19 @@ export default function AgendamentosPage() {
               // Visualização
               <div className="space-y-4">
                 <div
-                  className={`p-4 rounded-lg ${selectedAppointment.category.bgColor}`}
+                  className={`p-4 rounded-lg ${
+                    selectedAppointment.service?.category?.color || ""
+                  }`}
                 >
                   <h4
-                    className={`font-semibold ${selectedAppointment.category.color}`}
+                    className={`font-semibold ${
+                      selectedAppointment.service?.category?.color || ""
+                    }`}
                   >
                     {selectedAppointment.title}
                   </h4>
                   <p className="text-sm text-gray-600 mt-1">
-                    {selectedAppointment.category.name}
+                    {selectedAppointment.service?.category?.name || "-"}
                   </p>
                 </div>
 
@@ -521,9 +543,9 @@ export default function AgendamentosPage() {
                       Data
                     </label>
                     <p className="text-gray-900">
-                      {new Date(selectedAppointment.date).toLocaleDateString(
-                        "pt-BR"
-                      )}
+                      {new Date(
+                        selectedAppointment.startTime
+                      ).toLocaleDateString("pt-BR")}
                     </p>
                   </div>
                   <div>
@@ -542,10 +564,10 @@ export default function AgendamentosPage() {
                     Cliente
                   </label>
                   <p className="text-gray-900">
-                    {selectedAppointment.client.name}
+                    {selectedAppointment.user?.name || "-"}
                   </p>
                   <p className="text-sm text-gray-600">
-                    {selectedAppointment.client.phone}
+                    {selectedAppointment.user?.phone || "-"}
                   </p>
                 </div>
 
@@ -555,7 +577,7 @@ export default function AgendamentosPage() {
                       Local
                     </label>
                     <p className="text-gray-900">
-                      {selectedAppointment.location}
+                      {selectedAppointment.description || "-"}
                     </p>
                   </div>
                   <div>
@@ -564,21 +586,15 @@ export default function AgendamentosPage() {
                     </label>
                     <p className="text-gray-900">
                       R${" "}
-                      {selectedAppointment.value.toLocaleString("pt-BR", {
-                        minimumFractionDigits: 2,
-                      })}
+                      {selectedAppointment.service?.price.toLocaleString(
+                        "pt-BR",
+                        {
+                          minimumFractionDigits: 2,
+                        }
+                      )}
                     </p>
                   </div>
                 </div>
-
-                {selectedAppointment.notes && (
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Observações
-                    </label>
-                    <p className="text-gray-900">{selectedAppointment.notes}</p>
-                  </div>
-                )}
 
                 <div className="flex space-x-3 pt-4">
                   <button
@@ -657,7 +673,7 @@ export default function AgendamentosPage() {
                       }
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     >
-                      {categories.map((cat) => (
+                      {safeCategories.map((cat) => (
                         <option key={cat.id} value={cat.id}>
                           {cat.name}
                         </option>
