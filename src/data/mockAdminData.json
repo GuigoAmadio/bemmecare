@@ -1,0 +1,381 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Smartphone Galaxy Pro",
+      "category": "Eletrônicos",
+      "price": 2499.99,
+      "oldPrice": 2999.99,
+      "stock": 45,
+      "status": "active",
+      "sku": "SGP-001",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-01-20T14:45:00Z",
+      "sales": 127,
+      "rating": 4.8,
+      "image": "https://via.placeholder.com/400x400?text=Galaxy+Pro"
+    },
+    {
+      "id": "2",
+      "name": "Notebook UltraBook Air",
+      "category": "Informática",
+      "price": 3299.99,
+      "oldPrice": null,
+      "stock": 23,
+      "status": "active",
+      "sku": "NBA-002",
+      "createdAt": "2024-01-10T09:15:00Z",
+      "updatedAt": "2024-01-22T16:20:00Z",
+      "sales": 89,
+      "rating": 4.9,
+      "image": "https://via.placeholder.com/400x400?text=UltraBook"
+    },
+    {
+      "id": "3",
+      "name": "Headphone Wireless Premium",
+      "category": "Áudio",
+      "price": 599.99,
+      "oldPrice": 799.99,
+      "stock": 0,
+      "status": "out_of_stock",
+      "sku": "HWP-003",
+      "createdAt": "2024-01-05T11:45:00Z",
+      "updatedAt": "2024-01-23T10:10:00Z",
+      "sales": 234,
+      "rating": 4.7,
+      "image": "https://via.placeholder.com/400x400?text=Headphone"
+    },
+    {
+      "id": "4",
+      "name": "Smartwatch Fitness Tracker",
+      "category": "Wearables",
+      "price": 899.99,
+      "oldPrice": 1199.99,
+      "stock": 67,
+      "status": "active",
+      "sku": "SFT-004",
+      "createdAt": "2024-01-12T14:20:00Z",
+      "updatedAt": "2024-01-21T12:30:00Z",
+      "sales": 156,
+      "rating": 4.6,
+      "image": "https://via.placeholder.com/400x400?text=Smartwatch"
+    },
+    {
+      "id": "5",
+      "name": "Câmera DSLR Profissional",
+      "category": "Fotografia",
+      "price": 4599.99,
+      "oldPrice": null,
+      "stock": 12,
+      "status": "low_stock",
+      "sku": "CDP-005",
+      "createdAt": "2024-01-08T08:00:00Z",
+      "updatedAt": "2024-01-19T15:45:00Z",
+      "sales": 43,
+      "rating": 4.9,
+      "image": "https://via.placeholder.com/400x400?text=Camera+DSLR"
+    },
+    {
+      "id": "6",
+      "name": "Tablet Designer Pro",
+      "category": "Eletrônicos",
+      "price": 1899.99,
+      "oldPrice": 2299.99,
+      "stock": 34,
+      "status": "active",
+      "sku": "TDP-006",
+      "createdAt": "2024-01-14T13:15:00Z",
+      "updatedAt": "2024-01-20T09:20:00Z",
+      "sales": 98,
+      "rating": 4.5,
+      "image": "https://via.placeholder.com/400x400?text=Tablet+Pro"
+    },
+    {
+      "id": "7",
+      "name": "Console Gaming Next Gen",
+      "category": "Games",
+      "price": 2899.99,
+      "oldPrice": null,
+      "stock": 8,
+      "status": "low_stock",
+      "sku": "CGN-007",
+      "createdAt": "2024-01-06T16:30:00Z",
+      "updatedAt": "2024-01-22T11:15:00Z",
+      "sales": 203,
+      "rating": 4.8,
+      "image": "https://via.placeholder.com/400x400?text=Console+Gaming"
+    },
+    {
+      "id": "8",
+      "name": "Mouse Gaming RGB",
+      "category": "Informática",
+      "price": 299.99,
+      "oldPrice": 399.99,
+      "stock": 156,
+      "status": "active",
+      "sku": "MGR-008",
+      "createdAt": "2024-01-11T10:45:00Z",
+      "updatedAt": "2024-01-18T14:50:00Z",
+      "sales": 312,
+      "rating": 4.4,
+      "image": "https://via.placeholder.com/400x400?text=Mouse+Gaming"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD-001",
+      "customerId": "USR-001",
+      "customerName": "Maria Silva",
+      "customerEmail": "maria.silva@email.com",
+      "status": "delivered",
+      "total": 3299.99,
+      "itemsCount": 2,
+      "paymentMethod": "credit_card",
+      "paymentStatus": "paid",
+      "shippingAddress": "Rua das Flores, 123 - São Paulo, SP",
+      "createdAt": "2024-01-20T14:30:00Z",
+      "updatedAt": "2024-01-22T16:45:00Z",
+      "deliveredAt": "2024-01-22T16:45:00Z",
+      "items": [
+        {
+          "productId": "2",
+          "productName": "Notebook UltraBook Air",
+          "quantity": 1,
+          "price": 3299.99
+        }
+      ]
+    },
+    {
+      "id": "ORD-002",
+      "customerId": "USR-002",
+      "customerName": "João Santos",
+      "customerEmail": "joao.santos@email.com",
+      "status": "shipped",
+      "total": 3399.98,
+      "itemsCount": 3,
+      "paymentMethod": "pix",
+      "paymentStatus": "paid",
+      "shippingAddress": "Av. Paulista, 456 - São Paulo, SP",
+      "createdAt": "2024-01-21T09:15:00Z",
+      "updatedAt": "2024-01-23T10:20:00Z",
+      "deliveredAt": null,
+      "items": [
+        {
+          "productId": "1",
+          "productName": "Smartphone Galaxy Pro",
+          "quantity": 1,
+          "price": 2499.99
+        },
+        {
+          "productId": "8",
+          "productName": "Mouse Gaming RGB",
+          "quantity": 3,
+          "price": 299.99
+        }
+      ]
+    },
+    {
+      "id": "ORD-003",
+      "customerId": "USR-003",
+      "customerName": "Ana Costa",
+      "customerEmail": "ana.costa@email.com",
+      "status": "processing",
+      "total": 1499.98,
+      "itemsCount": 2,
+      "paymentMethod": "credit_card",
+      "paymentStatus": "paid",
+      "shippingAddress": "Rua do Comércio, 789 - Rio de Janeiro, RJ",
+      "createdAt": "2024-01-23T11:45:00Z",
+      "updatedAt": "2024-01-23T11:45:00Z",
+      "deliveredAt": null,
+      "items": [
+        {
+          "productId": "3",
+          "productName": "Headphone Wireless Premium",
+          "quantity": 1,
+          "price": 599.99
+        },
+        {
+          "productId": "4",
+          "productName": "Smartwatch Fitness Tracker",
+          "quantity": 1,
+          "price": 899.99
+        }
+      ]
+    },
+    {
+      "id": "ORD-004",
+      "customerId": "USR-004",
+      "customerName": "Carlos Oliveira",
+      "customerEmail": "carlos.oliveira@email.com",
+      "status": "pending",
+      "total": 4599.99,
+      "itemsCount": 1,
+      "paymentMethod": "bank_transfer",
+      "paymentStatus": "pending",
+      "shippingAddress": "Rua Central, 321 - Belo Horizonte, MG",
+      "createdAt": "2024-01-23T15:20:00Z",
+      "updatedAt": "2024-01-23T15:20:00Z",
+      "deliveredAt": null,
+      "items": [
+        {
+          "productId": "5",
+          "productName": "Câmera DSLR Profissional",
+          "quantity": 1,
+          "price": 4599.99
+        }
+      ]
+    },
+    {
+      "id": "ORD-005",
+      "customerId": "USR-005",
+      "customerName": "Fernanda Lima",
+      "customerEmail": "fernanda.lima@email.com",
+      "status": "cancelled",
+      "total": 2899.99,
+      "itemsCount": 1,
+      "paymentMethod": "credit_card",
+      "paymentStatus": "refunded",
+      "shippingAddress": "Av. das Nações, 654 - Brasília, DF",
+      "createdAt": "2024-01-19T08:30:00Z",
+      "updatedAt": "2024-01-20T14:15:00Z",
+      "deliveredAt": null,
+      "items": [
+        {
+          "productId": "7",
+          "productName": "Console Gaming Next Gen",
+          "quantity": 1,
+          "price": 2899.99
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": "USR-001",
+      "firstName": "Maria",
+      "lastName": "Silva",
+      "email": "maria.silva@email.com",
+      "phone": "(11) 99999-1111",
+      "role": "customer",
+      "status": "active",
+      "isEmailVerified": true,
+      "createdAt": "2024-01-10T10:00:00Z",
+      "lastLoginAt": "2024-01-23T09:15:00Z",
+      "ordersCount": 3,
+      "totalSpent": 5299.97,
+      "avatar": "https://via.placeholder.com/150x150?text=MS",
+      "address": {
+        "street": "Rua das Flores, 123",
+        "city": "São Paulo",
+        "state": "SP",
+        "zipCode": "01234-567"
+      }
+    },
+    {
+      "id": "USR-002",
+      "firstName": "João",
+      "lastName": "Santos",
+      "email": "joao.santos@email.com",
+      "phone": "(11) 88888-2222",
+      "role": "customer",
+      "status": "active",
+      "isEmailVerified": true,
+      "createdAt": "2024-01-12T14:30:00Z",
+      "lastLoginAt": "2024-01-22T18:45:00Z",
+      "ordersCount": 2,
+      "totalSpent": 3899.97,
+      "avatar": "https://via.placeholder.com/150x150?text=JS",
+      "address": {
+        "street": "Av. Paulista, 456",
+        "city": "São Paulo",
+        "state": "SP",
+        "zipCode": "01310-100"
+      }
+    },
+    {
+      "id": "USR-003",
+      "firstName": "Ana",
+      "lastName": "Costa",
+      "email": "ana.costa@email.com",
+      "phone": "(21) 77777-3333",
+      "role": "customer",
+      "status": "active",
+      "isEmailVerified": true,
+      "createdAt": "2024-01-15T16:20:00Z",
+      "lastLoginAt": "2024-01-23T12:30:00Z",
+      "ordersCount": 1,
+      "totalSpent": 1499.98,
+      "avatar": "https://via.placeholder.com/150x150?text=AC",
+      "address": {
+        "street": "Rua do Comércio, 789",
+        "city": "Rio de Janeiro",
+        "state": "RJ",
+        "zipCode": "20040-020"
+      }
+    },
+    {
+      "id": "USR-004",
+      "firstName": "Carlos",
+      "lastName": "Oliveira",
+      "email": "carlos.oliveira@email.com",
+      "phone": "(31) 66666-4444",
+      "role": "customer",
+      "status": "active",
+      "isEmailVerified": false,
+      "createdAt": "2024-01-18T11:10:00Z",
+      "lastLoginAt": "2024-01-23T16:00:00Z",
+      "ordersCount": 1,
+      "totalSpent": 4599.99,
+      "avatar": "https://via.placeholder.com/150x150?text=CO",
+      "address": {
+        "street": "Rua Central, 321",
+        "city": "Belo Horizonte",
+        "state": "MG",
+        "zipCode": "30112-000"
+      }
+    },
+    {
+      "id": "USR-005",
+      "firstName": "Fernanda",
+      "lastName": "Lima",
+      "email": "fernanda.lima@email.com",
+      "phone": "(61) 55555-5555",
+      "role": "customer",
+      "status": "inactive",
+      "isEmailVerified": true,
+      "createdAt": "2024-01-08T09:45:00Z",
+      "lastLoginAt": "2024-01-20T14:15:00Z",
+      "ordersCount": 0,
+      "totalSpent": 0,
+      "avatar": "https://via.placeholder.com/150x150?text=FL",
+      "address": {
+        "street": "Av. das Nações, 654",
+        "city": "Brasília",
+        "state": "DF",
+        "zipCode": "70040-010"
+      }
+    },
+    {
+      "id": "ADM-001",
+      "firstName": "Admin",
+      "lastName": "Sistema",
+      "email": "admin@bemmecare.com",
+      "phone": "(11) 99999-0000",
+      "role": "admin",
+      "status": "active",
+      "isEmailVerified": true,
+      "createdAt": "2024-01-01T00:00:00Z",
+      "lastLoginAt": "2024-01-23T17:30:00Z",
+      "ordersCount": 0,
+      "totalSpent": 0,
+      "avatar": "https://via.placeholder.com/150x150?text=ADM",
+      "address": {
+        "street": "Sede da Empresa",
+        "city": "São Paulo",
+        "state": "SP",
+        "zipCode": "01000-000"
+      }
+    }
+  ]
+}

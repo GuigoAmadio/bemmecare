@@ -1,48 +1,45 @@
-import { cookies } from "next/headers";
-import type { ApiResponse } from "@/types";
+import type { ApiResponse } from "@/types/api";
 
-// Configuração da API
-const API_CONFIG = {
-  baseURL:
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.API_URL ||
-    "http://localhost:3000/api/v1", // Backend NestJS na porta 3000
-  defaultClientId: process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID || "bemmecare", // ID específico da BemMeCare
-};
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const DEFAULT_CLIENT_ID = process.env.NEXT_PUBLIC_DEFAULT_CLIENT_ID || "";
 
-// Função para obter headers em Server Actions
-async function getServerHeaders(): Promise<Record<string, string>> {
+async function getHeaders(): Promise<HeadersInit> {
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    "x-client-id": DEFAULT_CLIENT_ID,
+  };
+
+  let token: string | undefined;
+
   try {
-    const cookieStore = await cookies();
-
-    const token = cookieStore.get("auth_token")?.value;
-    const clientId =
-      cookieStore.get("client_id")?.value || API_CONFIG.defaultClientId;
-
-    // Logs apenas em desenvolvimento
-    if (process.env.NODE_ENV === "development") {
-      console.log("🔍 Debug Server Headers:", { hasToken: !!token, clientId });
+    if (typeof window === "undefined") {
+      const { cookies } = await import("next/headers");
+      const cookieStore = await cookies();
+      const authCookie = cookieStore.get("auth_token");
+      token = authCookie?.value;
+    } else {
+      console.log(
+        "❌ [server-api] Executando no cliente - não é possível acessar cookies HTTP-only"
+      );
+      token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("auth_token="))
+        ?.split("=")[1];
     }
-
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-      "client-id": clientId,
-    };
-
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
-
-    return headers;
   } catch (error) {
-    if (process.env.NODE_ENV === "development") {
-      console.error("❌ Erro ao obter headers do servidor:", error);
-    }
-    return {
-      "Content-Type": "application/json",
-      "client-id": API_CONFIG.defaultClientId,
-    };
+    console.error("❌ [server-api] Erro geral ao acessar cookies:", error);
   }
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+    //  console.log("✅ [server-api] Authorization header adicionado");
+  } else {
+    console.log(
+      "❌ [server-api] Nenhum token disponível - requisição sem autenticação"
+    );
+  }
+
+  return headers;
 }
 
 // Funções para Server Actions
@@ -50,56 +47,64 @@ export async function serverFetch<T>(
   url: string,
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
-  const headers = await getServerHeaders();
+  const headers = await getHeaders();
 
-  const response = await fetch(`${API_CONFIG.baseURL}${url}`, {
+  if (process.env.NODE_ENV === "development") {
+    console.log("[server-api] Fazendo fetch:", {
+      url: `${API_URL}${url}`,
+      headers: { ...headers, ...(options.headers || {}) },
+      method: options.method || "GET",
+    });
+  }
+
+  const response = await fetch(`${API_URL}${url}`, {
     ...options,
     headers: {
       ...headers,
-      ...options.headers,
+      ...(options.headers || {}),
     },
   });
 
-  console.log("📡 [server-api] Resposta HTTP:", {
-    url: `${API_CONFIG.baseURL}${url}`,
-    status: response.status,
-    statusText: response.statusText,
-    ok: response.ok,
-    headers: Object.fromEntries(response.headers.entries()),
-  });
+  if (process.env.NODE_ENV === "development") {
+    console.log("📡 [server-api] Resposta HTTP:", {
+      url: `${API_URL}${url}`,
+      status: response.status,
+      statusText: response.statusText,
+      ok: response.ok,
+    });
+  }
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error("❌ [server-api] Erro HTTP:", {
-      status: response.status,
-      statusText: response.statusText,
-      body: errorText,
-    });
+    if (process.env.NODE_ENV === "development") {
+      console.error("❌ [server-api] Erro HTTP:", {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText,
+      });
+    }
     throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
   }
 
   const data = await response.json();
-  console.log(
-    "📦 [server-api] Dados recebidos:",
-    JSON.stringify(data, null, 2)
-  );
 
-  return {
-    success: true,
-    data,
-    message: "Success",
-  };
+  if (process.env.NODE_ENV === "development") {
+    console.log("📦 [server-api] Dados recebidos:", data);
+  }
+
+  return data;
 }
 
+// Funções para Server Actions
 export async function serverGet<T>(url: string): Promise<ApiResponse<T>> {
-  return serverFetch<T>(url);
+  return await serverFetch<T>(url);
 }
 
 export async function serverPost<T>(
   url: string,
   data?: unknown
 ): Promise<ApiResponse<T>> {
-  return serverFetch<T>(url, {
+  return await serverFetch<T>(url, {
     method: "POST",
     body: data ? JSON.stringify(data) : undefined,
   });
@@ -109,7 +114,7 @@ export async function serverPut<T>(
   url: string,
   data?: unknown
 ): Promise<ApiResponse<T>> {
-  return serverFetch<T>(url, {
+  return await serverFetch<T>(url, {
     method: "PUT",
     body: data ? JSON.stringify(data) : undefined,
   });
@@ -119,24 +124,12 @@ export async function serverPatch<T>(
   url: string,
   data?: unknown
 ): Promise<ApiResponse<T>> {
-  return serverFetch<T>(url, {
+  return await serverFetch<T>(url, {
     method: "PATCH",
     body: data ? JSON.stringify(data) : undefined,
   });
 }
 
 export async function serverDelete<T>(url: string): Promise<ApiResponse<T>> {
-  return serverFetch<T>(url, {
-    method: "DELETE",
-  });
-}
-
-// Função para verificar conectividade com o backend
-export async function checkBackendConnection(): Promise<boolean> {
-  try {
-    await serverGet("/health");
-    return true;
-  } catch {
-    return false;
-  }
+  return await serverFetch<T>(url, { method: "DELETE" });
 }

@@ -1,0 +1,278 @@
+[
+  {
+    "id": "1",
+    "name": "iPhone 15 Pro Max 256GB",
+    "description": "O mais avançado iPhone com chip A17 Pro, sistema de câmera profissional e tela Super Retina XDR de 6,7 polegadas.",
+    "price": 9999.00,
+    "oldPrice": 11499.00,
+    "image": "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop"
+    ],
+    "category": {
+      "id": "1",
+      "name": "Smartphones",
+      "slug": "smartphones",
+      "isActive": true,
+      "sortOrder": 1
+    },
+    "brand": "Apple",
+    "stock": 15,
+    "rating": 4.8,
+    "reviewCount": 128,
+    "features": ["5G", "Câmera 48MP", "Bateria de longa duração", "Resistente à água"],
+    "specifications": {
+      "Tela": "6.7 polegadas",
+      "Armazenamento": "256GB",
+      "RAM": "8GB",
+      "Camera": "48MP + 12MP + 12MP"
+    },
+    "isActive": true,
+    "isFeatured": true,
+    "weight": 0.221,
+    "createdAt": "2024-01-15T10:00:00Z",
+    "updatedAt": "2024-01-15T10:00:00Z"
+  },
+  {
+    "id": "2",
+    "name": "Tênis Nike Air Max 270 React",
+    "description": "Tênis esportivo com tecnologia Air Max para máximo conforto e estilo urbano moderno.",
+    "price": 399.99,
+    "oldPrice": 499.99,
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop"
+    ],
+    "category": {
+      "id": "2",
+      "name": "Calçados",
+      "slug": "calcados",
+      "isActive": true,
+      "sortOrder": 2
+    },
+    "brand": "Nike",
+    "stock": 8,
+    "rating": 4.5,
+    "reviewCount": 89,
+    "features": ["Respirável", "Amortecimento Air Max", "Design moderno", "Durável"],
+    "specifications": {
+      "Material": "Mesh e sintético",
+      "Solado": "Borracha",
+      "Peso": "280g",
+      "Tamanhos": "36-44"
+    },
+    "isActive": true,
+    "isFeatured": false,
+    "weight": 0.56,
+    "createdAt": "2024-01-14T15:30:00Z",
+    "updatedAt": "2024-01-14T15:30:00Z"
+  },
+  {
+    "id": "3",
+    "name": "MacBook Pro 14\" M3 Pro",
+    "description": "Laptop profissional com chip M3 Pro, tela Liquid Retina XDR e desempenho excepcional para criadores.",
+    "price": 15999.00,
+    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop"
+    ],
+    "category": {
+      "id": "3",
+      "name": "Laptops",
+      "slug": "laptops",
+      "isActive": true,
+      "sortOrder": 3
+    },
+    "brand": "Apple",
+    "stock": 12,
+    "rating": 4.9,
+    "reviewCount": 67,
+    "features": ["Chip M3 Pro", "Tela 14.2\"", "Bateria 18h", "Thunderbolt 4"],
+    "specifications": {
+      "Processador": "Apple M3 Pro",
+      "Memória": "18GB",
+      "Armazenamento": "512GB SSD",
+      "Tela": "14.2\" Liquid Retina XDR"
+    },
+    "isActive": true,
+    "isFeatured": true,
+    "weight": 1.6,
+    "createdAt": "2024-01-13T09:15:00Z",
+    "updatedAt": "2024-01-13T09:15:00Z"
+  },
+  {
+    "id": "4",
+    "name": "Samsung Galaxy Watch 6 Classic",
+    "description": "Smartwatch premium com mostrador rotativo, monitoramento de saúde avançado e design clássico.",
+    "price": 1899.00,
+    "oldPrice": 2299.00,
+    "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?w=400&h=400&fit=crop"
+    ],
+    "category": {
+      "id": "4",
+      "name": "Wearables",
+      "slug": "wearables",
+      "isActive": true,
+      "sortOrder": 4
+    },
+    "brand": "Samsung",
+    "stock": 25,
+    "rating": 4.6,
+    "reviewCount": 156,
+    "features": ["Mostrador rotativo", "GPS integrado", "Resistente à água", "Bateria 40h"],
+    "specifications": {
+      "Tela": "1.3\" Super AMOLED",
+      "Bateria": "425mAh",
+      "Conectividade": "Bluetooth 5.3, Wi-Fi",
+      "Resistência": "5ATM + IP68"
+    },
+    "isActive": true,
+    "isFeatured": false,
+    "weight": 0.059,
+    "createdAt": "2024-01-12T14:20:00Z",
+    "updatedAt": "2024-01-12T14:20:00Z"
+  },
+  {
+    "id": "5",
+    "name": "Sony WH-1000XM5 Headphone",
+    "description": "Fone de ouvido premium com cancelamento de ruído líder da indústria e qualidade de áudio excepcional.",
+    "price": 1599.00,
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=400&fit=crop"
+    ],
+    "category": {
+      "id": "5",
+      "name": "Áudio",
+      "slug": "audio",
+      "isActive": true,
+      "sortOrder": 5
+    },
+    "brand": "Sony",
+    "stock": 18,
+    "rating": 4.7,
+    "reviewCount": 234,
+    "features": ["Cancelamento de ruído", "30h de bateria", "Quick Charge", "Bluetooth 5.2"],
+    "specifications": {
+      "Tipo": "Over-ear",
+      "Bateria": "30 horas",
+      "Carregamento": "USB-C",
+      "Peso": "250g"
+    },
+    "isActive": true,
+    "isFeatured": true,
+    "weight": 0.25,
+    "createdAt": "2024-01-11T11:45:00Z",
+    "updatedAt": "2024-01-11T11:45:00Z"
+  },
+  {
+    "id": "6",
+    "name": "Cadeira Gamer Herman Miller X Logitech G",
+    "description": "Cadeira ergonômica premium desenvolvida especialmente para gamers com conforto profissional.",
+    "price": 8999.00,
+    "oldPrice": 9999.00,
+    "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1541558869434-2840d308329a?w=400&h=400&fit=crop"
+    ],
+    "category": {
+      "id": "6",
+      "name": "Móveis",
+      "slug": "moveis",
+      "isActive": true,
+      "sortOrder": 6
+    },
+    "brand": "Herman Miller",
+    "stock": 4,
+    "rating": 4.8,
+    "reviewCount": 45,
+    "features": ["Design ergonômico", "12 anos de garantia", "Ajustes personalizáveis", "Materiais premium"],
+    "specifications": {
+      "Material": "Mesh e alumínio",
+      "Peso máximo": "136kg",
+      "Ajuste de altura": "41-53cm",
+      "Garantia": "12 anos"
+    },
+    "isActive": true,
+    "isFeatured": false,
+    "weight": 18.5,
+    "createdAt": "2024-01-10T16:30:00Z",
+    "updatedAt": "2024-01-10T16:30:00Z"
+  },
+  {
+    "id": "7",
+    "name": "Tesla Model Y Performance Kit",
+    "description": "Kit de acessórios premium para Tesla Model Y com tapetes, organizadores e proteções personalizadas.",
+    "price": 2499.00,
+    "image": "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=400&h=400&fit=crop"
+    ],
+    "category": {
+      "id": "7",
+      "name": "Automotivo",
+      "slug": "automotivo",
+      "isActive": true,
+      "sortOrder": 7
+    },
+    "brand": "Tesla",
+    "stock": 0,
+    "rating": 4.4,
+    "reviewCount": 28,
+    "features": ["Encaixe perfeito", "Material premium", "Fácil instalação", "Design exclusivo"],
+    "specifications": {
+      "Compatibilidade": "Tesla Model Y 2022+",
+      "Material": "TPE de alta qualidade",
+      "Cor": "Preto",
+      "Itens": "7 peças"
+    },
+    "isActive": true,
+    "isFeatured": false,
+    "weight": 3.2,
+    "createdAt": "2024-01-09T13:15:00Z",
+    "updatedAt": "2024-01-09T13:15:00Z"
+  },
+  {
+    "id": "8",
+    "name": "Óculos Ray-Ban Meta Smart Glasses",
+    "description": "Óculos inteligentes com câmeras integradas, áudio espacial e conectividade com Meta AI.",
+    "price": 2299.00,
+    "image": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=400&fit=crop",
+    "images": [
+      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=400&h=400&fit=crop"
+    ],
+    "category": {
+      "id": "8",
+      "name": "Tech Wearables",
+      "slug": "tech-wearables",
+      "isActive": true,
+      "sortOrder": 8
+    },
+    "brand": "Ray-Ban",
+    "stock": 22,
+    "rating": 4.3,
+    "reviewCount": 73,
+    "features": ["Câmeras duplas", "Áudio espacial", "Meta AI", "Design clássico"],
+    "specifications": {
+      "Câmera": "12MP dupla",
+      "Bateria": "4 horas contínuas",
+      "Conectividade": "Wi-Fi + Bluetooth",
+      "Peso": "50g"
+    },
+    "isActive": true,
+    "isFeatured": true,
+    "weight": 0.05,
+    "createdAt": "2024-01-08T10:00:00Z",
+    "updatedAt": "2024-01-08T10:00:00Z"
+  }
+]
