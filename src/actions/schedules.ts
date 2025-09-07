@@ -315,7 +315,8 @@ export async function deleteSchedule(id: string): Promise<ScheduleResponse> {
     const response = await serverDelete(`/schedule/${id}`);
     log(`[deleteSchedule] Response for ID ${id}:`, response);
 
-    if (response.success) {
+    // Para DELETE 204, response é null, mas isso indica sucesso
+    if (response === null || response?.success) {
       // Invalidar cache relacionado
       cacheHelpers.schedules?.invalidateAll();
       log("[deleteSchedule] Cache invalidated");

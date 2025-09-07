@@ -39,7 +39,7 @@ interface TaskDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
   task: Schedule | null;
-  onUpdate: (taskData: UpdateScheduleInput) => void;
+  onUpdate: (taskId: string, taskData: UpdateScheduleInput) => void;
   onDelete: (taskId: string) => void;
   onStatusChange: (taskId: string, status: ScheduleStatus) => void;
   isLoading?: boolean;
@@ -62,7 +62,6 @@ export default function TaskDetailsModal({
   useEffect(() => {
     if (task) {
       setFormData({
-        id: task.id,
         title: task.title,
         description: task.description || "",
         date: task.date.split("T")[0],
@@ -122,23 +121,26 @@ export default function TaskDetailsModal({
   };
 
   const handleSave = () => {
-    if (!formData || !validateForm()) return;
+    if (!formData || !task || !validateForm()) return;
 
     const updateData: UpdateScheduleInput = {
-      ...formData,
-      startTime: formData.allDay
-        ? undefined
-        : formData.startTime
+      title: formData.title,
+      description: formData.description,
+      date: formData.date,
+      category: formData.category,
+      priority: formData.priority,
+      status: formData.status,
+      allDay: formData.allDay,
+      isPublic: formData.isPublic,
+      startTime: formData.startTime
         ? new Date(`${formData.date}T${formData.startTime}`).toISOString()
         : undefined,
-      endTime: formData.allDay
-        ? undefined
-        : formData.endTime
+      endTime: formData.endTime
         ? new Date(`${formData.date}T${formData.endTime}`).toISOString()
         : undefined,
     };
 
-    onUpdate(updateData);
+    onUpdate(task.id, updateData);
     setIsEditing(false);
   };
 
@@ -659,8 +661,8 @@ export default function TaskDetailsModal({
                 </h3>
               </div>
               <p className="text-gray-600 mb-6">
-                Tem certeza que deseja deletar a task &quot;{task.title}&quot;? Esta ação
-                não pode ser desfeita.
+                Tem certeza que deseja deletar a task &quot;{task.title}&quot;?
+                Esta ação não pode ser desfeita.
               </p>
               <div className="flex space-x-3">
                 <button

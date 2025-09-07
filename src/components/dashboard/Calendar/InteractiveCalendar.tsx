@@ -75,7 +75,9 @@ export default function InteractiveCalendar({
   const getSchedulesForDate = (date: Date) => {
     return schedules.filter((schedule) => {
       // Usar apenas a data (YYYY-MM-DD) para comparação
-      const scheduleDateStr = schedule.date; // "2025-09-09"
+      const scheduleDateStr = new Date(schedule.date)
+        .toISOString()
+        .split("T")[0]; // "2025-09-03"
       const calendarDateStr = date.toISOString().split("T")[0]; // "2025-09-09"
 
       const matches = scheduleDateStr === calendarDateStr;

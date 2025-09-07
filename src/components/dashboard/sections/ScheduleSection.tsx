@@ -117,11 +117,11 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
     setIsDetailsModalOpen(true);
   };
 
-  const handleUpdateTask = async (taskData: UpdateScheduleInput) => {
+  const handleUpdateTask = async (taskId: string, taskData: UpdateScheduleInput) => {
     try {
       setIsUpdating(true);
 
-      const success = await updateScheduleAction(taskData.id, taskData);
+      const success = await updateScheduleAction(taskId, taskData);
 
       if (!success) {
         console.error("❌ Erro ao atualizar task");
@@ -248,7 +248,6 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
       }
 
       const updateData: UpdateScheduleInput = {
-        id: taskId,
         date: newDate.toISOString().split("T")[0],
         // Manter o mesmo horário se existir, caso contrário usar o dia inteiro
         startTime:

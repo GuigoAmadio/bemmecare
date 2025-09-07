@@ -99,9 +99,7 @@ export interface CreateScheduleInput {
   employeeId?: string;
 }
 
-export interface UpdateScheduleInput extends Partial<CreateScheduleInput> {
-  id: string;
-}
+export interface UpdateScheduleInput extends Partial<CreateScheduleInput> {}
 
 // Interface para filtros de busca
 export interface GetSchedulesFilters {

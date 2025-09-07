@@ -74,7 +74,7 @@ export function ScheduleProvider({ children }: ScheduleProviderProps) {
       setError(null);
 
       const result = await getSchedules();
-
+      console.log("result", result);
       if (result) {
         setSchedules(result);
       } else {

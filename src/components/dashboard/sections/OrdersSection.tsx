@@ -1,13 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  ArrowLeft,
-  Search,
-  Filter,
-  ShoppingCart,
-  Eye,
-} from "lucide-react";
+import { ArrowLeft, Search, Filter, ShoppingCart, Eye } from "lucide-react";
 import { Order } from "@/types/orders";
 import { getOrders } from "@/actions/orders";
 import { cacheHelpers } from "@/lib/cache-utils";
@@ -156,7 +150,9 @@ export default function OrdersSection({ onBack }: OrdersSectionProps) {
             <Filter className="h-4 w-4 text-text-muted" />
             <select
               value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
+              onChange={(e) =>
+                setFilterStatus(e.target.value as typeof filterStatus)
+              }
               className="px-3 py-2 border border-border rounded-lg bg-background text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
             >
               <option value="all">Todos</option>

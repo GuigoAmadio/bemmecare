@@ -86,8 +86,16 @@ export async function serverFetch<T>(
     throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
   }
 
-  const data = await response.json();
+  // Verificar se há conteúdo antes de fazer JSON.parse
+  const contentType = response.headers.get("content-type");
+  let data;
 
+  if (contentType && contentType.includes("application/json")) {
+    const text = await response.text();
+    data = text ? JSON.parse(text) : null;
+  } else {
+    data = null;
+  }
   if (process.env.NODE_ENV === "development") {
     console.log("📦 [server-api] Dados recebidos:", data);
   }
