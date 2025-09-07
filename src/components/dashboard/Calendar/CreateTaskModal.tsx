@@ -1,24 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { 
-  X, 
-  Calendar, 
-  Clock, 
-  AlertCircle, 
-  Flag, 
+import {
+  X,
+  Calendar,
+  Clock,
+  AlertCircle,
+  Flag,
   Tag,
   User,
   FileText,
-  Save
+  Save,
 } from "lucide-react";
-import { 
-  ScheduleStatus, 
-  ScheduleCategory, 
+import {
+  ScheduleStatus,
+  ScheduleCategory,
   SchedulePriority,
   CreateScheduleInput,
   getScheduleCategoryLabel,
-  getSchedulePriorityLabel
+  getSchedulePriorityLabel,
 } from "@/types/schedule";
 
 interface CreateTaskModalProps {
@@ -29,17 +29,17 @@ interface CreateTaskModalProps {
   isLoading?: boolean;
 }
 
-export default function CreateTaskModal({ 
-  isOpen, 
-  onClose, 
-  onSubmit, 
+export default function CreateTaskModal({
+  isOpen,
+  onClose,
+  onSubmit,
   selectedDate,
-  isLoading = false 
+  isLoading = false,
 }: CreateTaskModalProps) {
   const [formData, setFormData] = useState<CreateScheduleInput>({
     title: "",
     description: "",
-    date: selectedDate.toISOString().split('T')[0],
+    date: selectedDate.toISOString().split("T")[0],
     category: ScheduleCategory.WORK,
     priority: SchedulePriority.MEDIUM,
     status: ScheduleStatus.PENDING,
@@ -49,22 +49,22 @@ export default function CreateTaskModal({
     endTime: "",
     tasks: [],
     reminders: [],
-    attachments: []
+    attachments: [],
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleInputChange = (field: keyof CreateScheduleInput, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
-    
+
     // Limpar erro do campo quando usuário começar a digitar
     if (errors[field]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [field]: ""
+        [field]: "",
       }));
     }
   };
@@ -88,17 +88,27 @@ export default function CreateTaskModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     // Preparar dados para envio
     const submitData: CreateScheduleInput = {
       ...formData,
       date: selectedDate.toISOString(),
-      startTime: formData.allDay ? undefined : formData.startTime ? 
-        new Date(`${selectedDate.toISOString().split('T')[0]}T${formData.startTime}`).toISOString() : undefined,
-      endTime: formData.allDay ? undefined : formData.endTime ? 
-        new Date(`${selectedDate.toISOString().split('T')[0]}T${formData.endTime}`).toISOString() : undefined,
+      startTime: formData.allDay
+        ? undefined
+        : formData.startTime
+        ? new Date(
+            `${selectedDate.toISOString().split("T")[0]}T${formData.startTime}`
+          ).toISOString()
+        : undefined,
+      endTime: formData.allDay
+        ? undefined
+        : formData.endTime
+        ? new Date(
+            `${selectedDate.toISOString().split("T")[0]}T${formData.endTime}`
+          ).toISOString()
+        : undefined,
     };
 
     onSubmit(submitData);
@@ -108,7 +118,7 @@ export default function CreateTaskModal({
     setFormData({
       title: "",
       description: "",
-      date: selectedDate.toISOString().split('T')[0],
+      date: selectedDate.toISOString().split("T")[0],
       category: ScheduleCategory.WORK,
       priority: SchedulePriority.MEDIUM,
       status: ScheduleStatus.PENDING,
@@ -118,7 +128,7 @@ export default function CreateTaskModal({
       endTime: "",
       tasks: [],
       reminders: [],
-      attachments: []
+      attachments: [],
     });
     setErrors({});
     onClose();
@@ -127,8 +137,8 @@ export default function CreateTaskModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="rounded-2xl shadow-2xl w-full max-w-2xl">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
           <div className="flex items-center space-x-3">
@@ -138,11 +148,11 @@ export default function CreateTaskModal({
             <div>
               <h2 className="text-xl font-bold text-gray-900">Nova Task</h2>
               <p className="text-sm text-gray-600">
-                {selectedDate.toLocaleDateString('pt-BR', { 
-                  weekday: 'long', 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
+                {selectedDate.toLocaleDateString("pt-BR", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
               </p>
             </div>
@@ -156,7 +166,10 @@ export default function CreateTaskModal({
         </div>
 
         {/* Form Content */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+        <form
+          onSubmit={handleSubmit}
+          className="p-6 space-y-6 overflow-y-auto h-full"
+        >
           {/* Título */}
           <div>
             <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-2">
@@ -166,9 +179,9 @@ export default function CreateTaskModal({
             <input
               type="text"
               value={formData.title}
-              onChange={(e) => handleInputChange('title', e.target.value)}
+              onChange={(e) => handleInputChange("title", e.target.value)}
               className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                errors.title ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                errors.title ? "border-red-300 bg-red-50" : "border-gray-300"
               }`}
               placeholder="Digite o título da task..."
             />
@@ -188,7 +201,7 @@ export default function CreateTaskModal({
             </label>
             <textarea
               value={formData.description}
-              onChange={(e) => handleInputChange('description', e.target.value)}
+              onChange={(e) => handleInputChange("description", e.target.value)}
               rows={3}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
               placeholder="Descreva os detalhes da task..."
@@ -204,10 +217,10 @@ export default function CreateTaskModal({
               </label>
               <select
                 value={formData.category}
-                onChange={(e) => handleInputChange('category', e.target.value)}
+                onChange={(e) => handleInputChange("category", e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               >
-                {Object.values(ScheduleCategory).map(category => (
+                {Object.values(ScheduleCategory).map((category) => (
                   <option key={category} value={category}>
                     {getScheduleCategoryLabel(category)}
                   </option>
@@ -222,10 +235,10 @@ export default function CreateTaskModal({
               </label>
               <select
                 value={formData.priority}
-                onChange={(e) => handleInputChange('priority', e.target.value)}
+                onChange={(e) => handleInputChange("priority", e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
               >
-                {Object.values(SchedulePriority).map(priority => (
+                {Object.values(SchedulePriority).map((priority) => (
                   <option key={priority} value={priority}>
                     {getSchedulePriorityLabel(priority)}
                   </option>
@@ -240,10 +253,13 @@ export default function CreateTaskModal({
               type="checkbox"
               id="allDay"
               checked={formData.allDay}
-              onChange={(e) => handleInputChange('allDay', e.target.checked)}
+              onChange={(e) => handleInputChange("allDay", e.target.checked)}
               className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
-            <label htmlFor="allDay" className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="allDay"
+              className="text-sm font-medium text-gray-700"
+            >
               Dia inteiro
             </label>
           </div>
@@ -259,7 +275,9 @@ export default function CreateTaskModal({
                 <input
                   type="time"
                   value={formData.startTime}
-                  onChange={(e) => handleInputChange('startTime', e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("startTime", e.target.value)
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 />
               </div>
@@ -272,9 +290,11 @@ export default function CreateTaskModal({
                 <input
                   type="time"
                   value={formData.endTime}
-                  onChange={(e) => handleInputChange('endTime', e.target.value)}
+                  onChange={(e) => handleInputChange("endTime", e.target.value)}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
-                    errors.endTime ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                    errors.endTime
+                      ? "border-red-300 bg-red-50"
+                      : "border-gray-300"
                   }`}
                 />
                 {errors.endTime && (
@@ -293,10 +313,13 @@ export default function CreateTaskModal({
               type="checkbox"
               id="isPublic"
               checked={formData.isPublic}
-              onChange={(e) => handleInputChange('isPublic', e.target.checked)}
+              onChange={(e) => handleInputChange("isPublic", e.target.checked)}
               className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
-            <label htmlFor="isPublic" className="text-sm font-medium text-gray-700">
+            <label
+              htmlFor="isPublic"
+              className="text-sm font-medium text-gray-700"
+            >
               Visível para outros usuários
             </label>
           </div>
@@ -321,7 +344,7 @@ export default function CreateTaskModal({
             ) : (
               <Save className="h-4 w-4" />
             )}
-            <span>{isLoading ? 'Criando...' : 'Criar Task'}</span>
+            <span>{isLoading ? "Criando..." : "Criar Task"}</span>
           </button>
         </div>
       </div>

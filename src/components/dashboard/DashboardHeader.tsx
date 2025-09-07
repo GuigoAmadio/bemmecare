@@ -91,126 +91,121 @@ export default function DashboardHeader({ user }: DashboardHeaderProps) {
       }`}
     >
       {/* Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 via-purple-50/50 to-pink-50/50"></div>
       <div className="relative">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between h-16 relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2">
-              {/* Exibe a seção atual do dashboard */}
-              <span className="text-lg font-semibold text-text-primary capitalize">
-                {getSectionLabel(currentSection)}
+        <div className="flex items-center justify-between h-16 relative px-10">
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            {/* Exibe a seção atual do dashboard */}
+            <span className="text-lg font-semibold text-black capitalize">
+              {getSectionLabel(currentSection)}
+            </span>
+          </div>
+          {/* Left Side */}
+          <div className="flex items-center space-x-4">
+            {/* Logo */}
+            <Link href="/dashboard" className="flex items-center group">
+              <span className="text-2xl font-bold text-black">BemmeCare</span>
+            </Link>
+
+            {/* Role Badge */}
+            <div
+              className={`hidden sm:flex items-center px-3 py-1 rounded-full border ${getRoleColor(
+                user.role
+              )}`}
+            >
+              <div
+                className={`w-2 h-2 rounded-full ${getRoleDotColor(
+                  user.role
+                )} mr-2`}
+              ></div>
+              <span className="text-sm font-medium">
+                {getRoleLabel(user.role)}
               </span>
             </div>
-            {/* Left Side */}
-            <div className="flex items-center space-x-4">
-              {/* Logo */}
-              <Link href="/dashboard" className="flex items-center group">
-                <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent group-hover:scale-105 transition-transform">
-                  BemmeCare
-                </span>
-              </Link>
 
-              {/* Role Badge */}
-              <div
-                className={`hidden sm:flex items-center px-3 py-1 rounded-full border ${getRoleColor(
-                  user.role
-                )}`}
-              >
-                <div
-                  className={`w-2 h-2 rounded-full ${getRoleDotColor(
-                    user.role
-                  )} mr-2`}
-                ></div>
-                <span className="text-sm font-medium">
-                  {getRoleLabel(user.role)}
-                </span>
-              </div>
-
-              {/* Quick Actions Icons */}
-              <div className="hidden lg:flex items-center space-x-1 ml-4">
-                <Link
-                  href="/dashboard?section=products"
-                  className="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-all group relative"
-                  title="Produtos"
-                >
-                  <Package className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                </Link>
-                <Link
-                  href="/dashboard?section=orders"
-                  className="p-2 hover:bg-green-50 text-green-600 rounded-lg transition-all group relative"
-                  title="Pedidos"
-                >
-                  <ShoppingCart className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                </Link>
-                <Link
-                  href="/dashboard?section=users"
-                  className="p-2 hover:bg-purple-50 text-purple-600 rounded-lg transition-all group relative"
-                  title="Usuários"
-                >
-                  <Users className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                </Link>
-                <Link
-                  href="/dashboard?section=schedule"
-                  className="p-2 hover:bg-orange-50 text-orange-600 rounded-lg transition-all group relative"
-                  title="Agenda"
-                >
-                  <Calendar className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                </Link>
-              </div>
-            </div>
-            {/* Right Side */}
-            <div className="flex items-center space-x-3">
-              {/* Notifications */}
-              <button className="relative p-2 text-text-muted hover:text-primary hover:bg-primary/5 rounded-lg transition-all group">
-                <Bell className="h-5 w-5 group-hover:scale-110 transition-transform" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-error rounded-full flex items-center justify-center">
-                  <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
-                </span>
-              </button>
-
-              {/* Settings */}
+            {/* Quick Actions Icons */}
+            <div className="hidden lg:flex items-center space-x-1 ml-4">
               <Link
-                href="/dashboard/settings"
-                className="p-2 text-text-muted hover:text-primary hover:bg-primary/5 rounded-lg transition-all group"
+                href="/dashboard?section=products"
+                className="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-all group relative"
+                title="Produtos"
               >
-                <Settings className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
+                <Package className="h-4 w-4 group-hover:scale-110 transition-transform" />
               </Link>
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-2 text-text-muted hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+              <Link
+                href="/dashboard?section=orders"
+                className="p-2 hover:bg-green-50 text-green-600 rounded-lg transition-all group relative"
+                title="Pedidos"
               >
-                {isMobileMenuOpen ? (
-                  <X className="h-5 w-5" />
-                ) : (
-                  <Menu className="h-5 w-5" />
-                )}
-              </button>
+                <ShoppingCart className="h-4 w-4 group-hover:scale-110 transition-transform" />
+              </Link>
+              <Link
+                href="/dashboard?section=users"
+                className="p-2 hover:bg-purple-50 text-purple-600 rounded-lg transition-all group relative"
+                title="Usuários"
+              >
+                <Users className="h-4 w-4 group-hover:scale-110 transition-transform" />
+              </Link>
+              <Link
+                href="/dashboard?section=schedule"
+                className="p-2 hover:bg-orange-50 text-orange-600 rounded-lg transition-all group relative"
+                title="Agenda"
+              >
+                <Calendar className="h-4 w-4 group-hover:scale-110 transition-transform" />
+              </Link>
             </div>
           </div>
+          {/* Right Side */}
+          <div className="flex items-center space-x-3">
+            {/* Notifications */}
+            <button className="relative p-2 text-text-muted hover:text-primary hover:bg-primary/5 rounded-lg transition-all group">
+              <Bell className="h-5 w-5 group-hover:scale-110 transition-transform" />
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-error rounded-full flex items-center justify-center">
+                <span className="w-1.5 h-1.5 bg-white rounded-full"></span>
+              </span>
+            </button>
 
-          {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div className="lg:hidden border-t border-border/20 py-4">
-              {/* Mobile Role Badge */}
-              <div
-                className={`sm:hidden flex items-center px-3 py-2 rounded-lg border mb-4 ${getRoleColor(
-                  user.role
-                )}`}
-              >
-                <div
-                  className={`w-2 h-2 rounded-full ${getRoleDotColor(
-                    user.role
-                  )} mr-2`}
-                ></div>
-                <span className="text-sm font-medium">
-                  {getRoleLabel(user.role)}
-                </span>
-              </div>
-            </div>
-          )}
+            {/* Settings */}
+            <Link
+              href="/dashboard/settings"
+              className="p-2 text-text-muted hover:text-primary hover:bg-primary/5 rounded-lg transition-all group"
+            >
+              <Settings className="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
+            </Link>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 text-text-muted hover:text-primary hover:bg-primary/5 rounded-lg transition-all"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden border-t border-border/20 py-4">
+            {/* Mobile Role Badge */}
+            <div
+              className={`sm:hidden flex items-center px-3 py-2 rounded-lg border mb-4 ${getRoleColor(
+                user.role
+              )}`}
+            >
+              <div
+                className={`w-2 h-2 rounded-full ${getRoleDotColor(
+                  user.role
+                )} mr-2`}
+              ></div>
+              <span className="text-sm font-medium">
+                {getRoleLabel(user.role)}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

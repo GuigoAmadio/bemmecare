@@ -1,8 +1,8 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { MockDataProvider } from "@/context/MockDataContext";
 import { SectionProvider } from "@/context/SectionContext";
+import { ScheduleProvider } from "@/context/ScheduleContext";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -89,20 +89,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   return (
-    <MockDataProvider>
-      <SectionProvider>
+    <SectionProvider>
+      <ScheduleProvider>
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
-          {/* Indicador de modo desenvolvimento */}
-          {isDevelopment && !user && (
-            <div className="bg-orange-500 text-white text-center py-2 px-4 text-sm font-medium">
-              🛠️ MODO DESENVOLVIMENTO - Usuário: {mockUser.name} (
-              {mockUser.role})
-            </div>
-          )}
           <DashboardHeader user={currentUser} />
-          <main className="container mx-auto px-6 py-8">{children}</main>
+          <main className="container mx-auto px-6 py-8 h-full">{children}</main>
         </div>
-      </SectionProvider>
-    </MockDataProvider>
+      </ScheduleProvider>
+    </SectionProvider>
   );
 }

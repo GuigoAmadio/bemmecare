@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { Schedule, ScheduleStatus, ScheduleCategory } from "@/types/schedule";
 import DraggableTask from "./DraggableTask";
-import DropZone from "./DropZone";
 import ViewModeSelector from "./ViewModeSelector";
 
 interface CalendarDay {
@@ -64,6 +63,7 @@ export default function InteractiveCalendar({
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showColorPicker, setShowColorPicker] = useState<string | null>(null);
   const [cellColors, setCellColors] = useState<Record<string, string>>({});
+  const [isProcessingDrop, setIsProcessingDrop] = useState(false);
 
   // Função auxiliar para verificar se é hoje
   const isToday = (date: Date) => {
@@ -74,8 +74,12 @@ export default function InteractiveCalendar({
   // Função para obter schedules de uma data específica
   const getSchedulesForDate = (date: Date) => {
     return schedules.filter((schedule) => {
-      const scheduleDate = new Date(schedule.date);
-      return scheduleDate.toDateString() === date.toDateString();
+      // Usar apenas a data (YYYY-MM-DD) para comparação
+      const scheduleDateStr = schedule.date; // "2025-09-09"
+      const calendarDateStr = date.toISOString().split("T")[0]; // "2025-09-09"
+
+      const matches = scheduleDateStr === calendarDateStr;
+      return matches;
     });
   };
 
@@ -218,18 +222,18 @@ export default function InteractiveCalendar({
   };
 
   return (
-    <div className="relative p-10">
+    <div className="relative p-10 px-16">
       {/* Navegação do Calendário - Centralizada */}
       <div className="absolute top-1/2 left-0 right-0 flex items-center justify-between">
         <button
           onClick={goToPreviousMonth}
-          className="p-3 bg-black rounded-full transition-all duration-300 hover:cursor-pointer hover:scale-120"
+          className="p-1 bg-white rounded-full transition-all duration-300 hover:cursor-pointer hover:scale-105"
         >
           <ChevronLeft className="hover:text-purple-200 h-8 w-8 text-gray-600" />
         </button>
         <button
           onClick={goToNextMonth}
-          className="p-3 rounded-full transition-all duration-300 hover:cursor-pointer hover:scale-120"
+          className="p-1 bg-white rounded-full transition-all duration-300 hover:cursor-pointer hover:scale-105"
         >
           <ChevronRight className="hover:text-purple-200 h-8 w-8 text-gray-600" />
         </button>
@@ -277,21 +281,47 @@ export default function InteractiveCalendar({
         {calendarDays.map((day, index) => {
           const dateKey = getDateKey(day.date);
           const isColorPickerOpen = showColorPicker === dateKey;
-
-          const handleTaskDrop = (schedule: Schedule) => {
-            if (onTaskMove && schedule.id) {
-              onTaskMove(schedule.id, day.date);
-            }
-          };
-
           return (
-            <DropZone
+            <div
               key={index}
-              onDrop={handleTaskDrop}
               className={`relative h-28 rounded-xl overflow-hidden border border-gray-200 cursor-pointer transition-all duration-200 hover:shadow-lg hover:shadow-purple-200 hover:border-purple-200 group ${getCellColorClass(
                 day
               )} `}
-              dropIndicatorClass="ring-2 ring-blue-500 ring-opacity-50 bg-blue-50/50"
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
+
+                // Proteção contra múltiplos drops
+                if (isProcessingDrop) {
+                  console.log("🚫 Drop ignorado - já processando outro drop");
+                  return;
+                }
+
+                try {
+                  const dropData = JSON.parse(
+                    e.dataTransfer.getData("application/json")
+                  );
+                  if (
+                    dropData.type === "schedule" &&
+                    onTaskMove &&
+                    dropData.data.id
+                  ) {
+                    setIsProcessingDrop(true);
+                    onTaskMove(dropData.data.id, day.date);
+
+                    // Reset após um delay para permitir próximo drop
+                    setTimeout(() => {
+                      setIsProcessingDrop(false);
+                    }, 100);
+                  }
+                } catch (error) {
+                  console.error("Erro ao processar drop:", error);
+                  setIsProcessingDrop(false);
+                }
+              }}
             >
               <div
                 onClick={() => handleDayClick(day)}
@@ -311,7 +341,7 @@ export default function InteractiveCalendar({
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity flex space-x-1">
                     <button
                       onClick={(e) => handleCreateTask(day, e)}
-                      className="p-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                      className="p-1 rounded transition-all duration-300 hover:cursor-pointer hover:scale-120"
                       title="Criar Task"
                     >
                       <Plus className="h-3 w-3" />
@@ -321,7 +351,7 @@ export default function InteractiveCalendar({
                         e.stopPropagation();
                         setShowColorPicker(isColorPickerOpen ? null : dateKey);
                       }}
-                      className="p-1 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors"
+                      className="p-1 rounded transition-all duration-300 hover:cursor-pointer hover:scale-120"
                       title="Alterar Cor"
                     >
                       <Palette className="h-3 w-3" />
@@ -332,9 +362,9 @@ export default function InteractiveCalendar({
                 {/* Tasks Draggable */}
                 <div className="absolute bottom-1 left-1 right-1">
                   <div className="flex flex-wrap gap-1">
-                    {day.schedules.slice(0, 2).map((schedule, idx) => (
+                    {day.schedules.slice(0, 2).map((schedule) => (
                       <DraggableTask
-                        key={`${schedule.id}-${idx}`}
+                        key={`${schedule.id}-${day.date.toISOString()}`}
                         schedule={schedule}
                         onClick={onTaskClick}
                         size="small"
@@ -384,7 +414,7 @@ export default function InteractiveCalendar({
                   </div>
                 )}
               </div>
-            </DropZone>
+            </div>
           );
         })}
       </div>

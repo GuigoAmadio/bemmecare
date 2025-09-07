@@ -5,7 +5,7 @@
     scroll-behavior: smooth;
     color-scheme: light !important;
   }
-  
+
   html.dark {
     color-scheme: light !important;
   }
@@ -18,27 +18,6 @@
     font-family: var(--font-inter), Arial, Helvetica, sans-serif;
     background-color: var(--color-background) !important;
     color: var(--color-text-primary) !important;
-  }
-}
-
-@layer utilities {
-  .force-light-theme,
-  html.dark,
-  html.dark *,
-  .dark {
-    --color-background: #ffffff !important;
-    --color-background-secondary: #f8fafc !important;
-    --color-text-primary: #1e293b !important;
-    --color-text-secondary: #64748b !important;
-    --color-primary: #3b82f6 !important;
-    --color-accent: #f59e0b !important;
-    --color-border: #e2e8f0 !important;
-    --color-success: #10b981 !important;
-    --color-warning: #f59e0b !important;
-    --color-error: #ef4444 !important;
-    color-scheme: light !important;
-    background-color: #ffffff !important;
-    color: #1e293b !important;
   }
 }
 

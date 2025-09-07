@@ -32,7 +32,7 @@ async function getHeaders(): Promise<HeadersInit> {
 
   if (token) {
     headers.Authorization = `Bearer ${token}`;
-    //  console.log("✅ [server-api] Authorization header adicionado");
+    console.log("✅ [server-api] Authorization header adicionado");
   } else {
     console.log(
       "❌ [server-api] Nenhum token disponível - requisição sem autenticação"

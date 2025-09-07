@@ -14,6 +14,7 @@ import {
   ScheduleResponse,
   SchedulesListResponse,
   ScheduleStatsResponse,
+  ScheduleStats,
   ScheduleStatus,
 } from "@/types/schedule";
 import {
@@ -68,7 +69,7 @@ export async function getScheduleById(
   id: string
 ): Promise<Schedule | undefined> {
   try {
-    if (!validateId(id)) {
+    if (!id || typeof id !== "string" || id.trim() === "") {
       throw new Error("ID do schedule é obrigatório");
     }
 
@@ -130,12 +131,12 @@ export async function getScheduleStats(): Promise<ScheduleStatsResponse> {
       return cached;
     }
 
-    const response = await serverGet<ScheduleStatsResponse>("/schedule/stats");
+    const response = await serverGet<ScheduleStats>("/schedule/stats");
     log("[getScheduleStats] Response:", response);
 
     if (response.data) {
       const result: ScheduleStatsResponse = {
-        success: getApiSuccessStatus(response),
+        success: response.success || false,
         data: response.data,
         message: response.message,
       };
@@ -215,17 +216,20 @@ export async function createSchedule(
  * Atualizar um schedule existente
  */
 export async function updateSchedule(
+  id: string,
   scheduleData: UpdateScheduleInput
 ): Promise<ScheduleResponse> {
   try {
-    if (!validateId(scheduleData.id)) {
+    if (!id || typeof id !== "string" || id.trim() === "") {
       throw new Error("ID do schedule é obrigatório");
     }
 
-    log(`[updateSchedule] Updating schedule ${scheduleData.id}:`, scheduleData);
+    log(`[updateSchedule] Updating schedule ${id}:`, scheduleData);
 
-    const { id, ...updateData } = scheduleData;
-    const response = await serverPatch<Schedule>(`/schedule/${id}`, updateData);
+    const response = await serverPatch<Schedule>(
+      `/schedule/${id}`,
+      scheduleData
+    );
     log(`[updateSchedule] Response for ID ${id}:`, response);
 
     if (response.data) {
@@ -261,7 +265,7 @@ export async function updateScheduleStatus(
   status: ScheduleStatus
 ): Promise<ScheduleResponse> {
   try {
-    if (!validateId(id)) {
+    if (!id || typeof id !== "string" || id.trim() === "") {
       throw new Error("ID do schedule é obrigatório");
     }
 
@@ -310,7 +314,7 @@ export async function updateScheduleStatus(
  */
 export async function deleteSchedule(id: string): Promise<ScheduleResponse> {
   try {
-    if (!validateId(id)) {
+    if (!id || typeof id !== "string" || id.trim() === "") {
       throw new Error("ID do schedule é obrigatório");
     }
 
@@ -319,7 +323,7 @@ export async function deleteSchedule(id: string): Promise<ScheduleResponse> {
     const response = await serverDelete(`/schedule/${id}`);
     log(`[deleteSchedule] Response for ID ${id}:`, response);
 
-    if (getApiSuccessStatus(response)) {
+    if (response.success) {
       // Invalidar cache relacionado
       cacheHelpers.schedules?.invalidateAll();
       log("[deleteSchedule] Cache invalidated");
@@ -372,7 +376,7 @@ export async function createMultipleSchedules(
 
       return {
         success: true,
-        data: response.data,
+        data: (response.data as Schedule[])[0],
         message: `${schedulesData.length} schedules criados com sucesso`,
       };
     }
@@ -403,17 +407,17 @@ export async function deleteMultipleSchedules(
 
     // Validar todos os IDs
     for (const id of ids) {
-      if (!validateId(id)) {
+      if (!id || typeof id !== "string" || id.trim() === "") {
         throw new Error(`ID inválido: ${id}`);
       }
     }
 
     log("[deleteMultipleSchedules] Deleting schedules:", ids);
 
-    const response = await serverDelete("/schedule/batch", { ids });
+    const response = await serverDelete("/schedule/batch");
     log("[deleteMultipleSchedules] Response:", response);
 
-    if (getApiSuccessStatus(response)) {
+    if (response.success) {
       // Invalidar cache relacionado
       cacheHelpers.schedules?.invalidateAll();
       log("[deleteMultipleSchedules] Cache invalidated");
@@ -482,7 +486,11 @@ export async function getSchedulesByEmployee(
   employeeId: string
 ): Promise<Schedule[] | undefined> {
   try {
-    if (!validateId(employeeId)) {
+    if (
+      !employeeId ||
+      typeof employeeId !== "string" ||
+      employeeId.trim() === ""
+    ) {
       throw new Error("ID do funcionário é obrigatório");
     }
 

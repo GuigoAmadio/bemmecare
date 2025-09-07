@@ -25,15 +25,7 @@ import {
   getScheduleStatusLabel,
   getScheduleCategoryLabel,
 } from "@/types/schedule";
-// import {
-//   getSchedules,
-//   createSchedule,
-//   updateSchedule,
-//   deleteSchedule,
-//   updateScheduleStatus,
-// } from "@/actions/schedules";
-// import { cacheHelpers } from "@/lib/cache-utils";
-import { useMockData } from "@/context/MockDataContext";
+import { useScheduleContext } from "@/context/ScheduleContext";
 import InteractiveCalendar from "../Calendar/InteractiveCalendar";
 import CreateTaskModal from "../Calendar/CreateTaskModal";
 import TaskDetailsModal from "../Calendar/TaskDetailsModal";
@@ -44,33 +36,28 @@ import WeeklyView from "../Calendar/WeeklyView";
 import ViewModeSelector from "../Calendar/ViewModeSelector";
 import GlobalSearch from "../Calendar/GlobalSearch";
 import ReminderSystem from "../Calendar/ReminderSystem";
-import MockDataDemo from "../Calendar/MockDataDemo";
-import MockDataNotification from "../Calendar/MockDataNotification";
 
 interface ScheduleSectionProps {
   onBack: () => void;
 }
 
 export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  // Usar contexto para dados de schedule
+  const {
+    schedules,
+    loading,
+    error,
+    createSchedule: createScheduleAction,
+    updateSchedule: updateScheduleAction,
+    deleteSchedule: deleteScheduleAction,
+    updateScheduleStatus: updateScheduleStatusAction,
+  } = useScheduleContext();
 
-  // Log quando schedules mudar
-  useEffect(() => {
-    console.log("📊 Estado schedules mudou para:", schedules.length);
-  }, [schedules]);
   const [filteredSchedules, setFilteredSchedules] = useState<Schedule[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [viewMode, setViewMode] = useState<
-    "calendar" | "weekly" | "list" | "stats" | "mockup"
+    "calendar" | "weekly" | "list" | "stats"
   >("calendar");
-
-  // Mock Data Context
-  const {
-    isMockDataActive,
-    schedules: mockSchedules,
-    clearMockData,
-  } = useMockData();
 
   // Modals
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -85,10 +72,6 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
   // Global search
   const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
 
-  // Mock data notification
-  const [showMockDataNotification, setShowMockDataNotification] =
-    useState(false);
-
   // Filters
   const [filters, setFilters] = useState<CalendarFiltersState>({
     search: "",
@@ -100,116 +83,7 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
     showPrivateOnly: false,
   });
 
-  useEffect(() => {
-    // Só carregar se não houver dados mockup ativos
-    if (!isMockDataActive) {
-      loadSchedule();
-    }
-  }, [isMockDataActive]);
-
-  // Recarregar dados quando dados mockup mudarem
-  useEffect(() => {
-    console.log(
-      "🔄 useEffect mockup - isMockDataActive:",
-      isMockDataActive,
-      "mockSchedules.length:",
-      mockSchedules.length
-    );
-
-    if (isMockDataActive && mockSchedules.length > 0) {
-      console.log("🔄 Dados mockup atualizados, recarregando agenda");
-      console.log("📊 Dados mockup:", mockSchedules);
-      setSchedules(mockSchedules);
-      setShowMockDataNotification(true);
-      console.log("✅ Estado schedules atualizado para:", mockSchedules.length);
-    }
-  }, [isMockDataActive, mockSchedules]);
-
-  // Recarregar quando dados mockup mudarem
-  useEffect(() => {
-    if (isMockDataActive && mockSchedules.length > 0) {
-      loadSchedule();
-    }
-  }, [isMockDataActive, mockSchedules]);
-
-  const loadSchedule = async () => {
-    try {
-      setLoading(true);
-
-      // Se dados mockup estiverem ativos, usá-los
-      if (isMockDataActive && mockSchedules.length > 0) {
-        console.log("📦 Usando dados mockup ativos:", mockSchedules.length);
-        setSchedules(mockSchedules);
-        setLoading(false);
-        return;
-      }
-
-      // TEMPORARIAMENTE DESABILITADO - FOCANDO APENAS EM DADOS MOCKUP
-      console.log("🚫 Backend desabilitado - usando apenas dados mockup");
-
-      // Dados mockup padrão quando não há dados mockup ativos
-      const defaultMockSchedules: Schedule[] = [
-        {
-          id: "1",
-          clientId: "client-1",
-          userId: "user-1",
-          title: "Reunião de Planejamento",
-          description: "Discussão sobre metas do próximo trimestre",
-          date: new Date().toISOString(),
-          tasks: [],
-          status: ScheduleStatus.PENDING,
-          priority: SchedulePriority.HIGH,
-          startTime: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
-          endTime: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
-          allDay: false,
-          isRecurring: false,
-          color: "#3B82F6",
-          category: ScheduleCategory.MEETING,
-          reminders: [],
-          attachments: [],
-          isPublic: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        {
-          id: "2",
-          clientId: "client-1",
-          userId: "user-1",
-          title: "Consulta com Cliente Premium",
-          description: "Revisão de portfólio de investimentos",
-          date: new Date(Date.now() + 86400000).toISOString(),
-          tasks: [],
-          status: ScheduleStatus.IN_PROGRESS,
-          priority: SchedulePriority.HIGH,
-          startTime: new Date(
-            Date.now() + 86400000 + 2 * 60 * 60 * 1000
-          ).toISOString(),
-          endTime: new Date(
-            Date.now() + 86400000 + 3 * 60 * 60 * 1000
-          ).toISOString(),
-          allDay: false,
-          isRecurring: false,
-          color: "#F59E0B",
-          category: ScheduleCategory.APPOINTMENT,
-          reminders: [],
-          attachments: [],
-          isPublic: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ];
-
-      setSchedules(defaultMockSchedules);
-      console.log(
-        "✅ Dados mockup padrão carregados:",
-        defaultMockSchedules.length
-      );
-    } catch (error) {
-      console.error("❌ Erro ao carregar agenda:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Não precisamos mais carregar dados aqui, o contexto já faz isso
 
   const handleDayClick = (date: Date) => {
     setSelectedDate(date);
@@ -223,32 +97,14 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
   const handleSubmitTask = async (taskData: CreateScheduleInput) => {
     try {
       setIsCreating(true);
-      // TEMPORARIAMENTE DESABILITADO - FOCANDO APENAS EM DADOS MOCKUP
-      console.log("🚫 Backend desabilitado - simulando criação de task");
 
-      // Simular criação local
-      const newTask: Schedule = {
-        ...taskData,
-        id: `mock-${Date.now()}`,
-        clientId: "mock-client",
-        userId: "mock-user",
-        tasks: [],
-        status: ScheduleStatus.PENDING,
-        priority: SchedulePriority.MEDIUM,
-        allDay: false,
-        isRecurring: false,
-        color: "#3B82F6",
-        category: ScheduleCategory.OTHER,
-        reminders: [],
-        attachments: [],
-        isPublic: false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+      const success = await createScheduleAction(taskData);
 
-      setSchedules((prev) => [...prev, newTask]);
-      setIsCreateModalOpen(false);
-      console.log("✅ Task criada localmente (simulação):", newTask.title);
+      if (success) {
+        setIsCreateModalOpen(false);
+      } else {
+        console.error("❌ Erro ao criar task");
+      }
     } catch (error) {
       console.error("❌ Erro ao criar task:", error);
     } finally {
@@ -264,16 +120,11 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
   const handleUpdateTask = async (taskData: UpdateScheduleInput) => {
     try {
       setIsUpdating(true);
-      // TEMPORARIAMENTE DESABILITADO - FOCANDO APENAS EM DADOS MOCKUP
-      console.log("🚫 Backend desabilitado - simulando atualização");
 
-      // Simular atualização local
-      const updatedTask = { ...selectedTask, ...taskData } as Schedule;
-      if (updatedTask) {
-        setSchedules((prev) =>
-          prev.map((task) => (task.id === taskData.id ? updatedTask : task))
-        );
-        console.log("✅ Task atualizada localmente (simulação)");
+      const success = await updateScheduleAction(taskData.id, taskData);
+
+      if (!success) {
+        console.error("❌ Erro ao atualizar task");
       }
     } catch (error) {
       console.error("❌ Erro ao atualizar task:", error);
@@ -285,14 +136,15 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
   const handleDeleteTask = async (taskId: string) => {
     try {
       setIsUpdating(true);
-      // TEMPORARIAMENTE DESABILITADO - FOCANDO APENAS EM DADOS MOCKUP
-      console.log("🚫 Backend desabilitado - simulando exclusão");
 
-      // Simular exclusão local
-      setSchedules((prev) => prev.filter((task) => task.id !== taskId));
-      setIsDetailsModalOpen(false);
-      setSelectedTask(null);
-      console.log("✅ Task deletada localmente (simulação)");
+      const success = await deleteScheduleAction(taskId);
+
+      if (success) {
+        setIsDetailsModalOpen(false);
+        setSelectedTask(null);
+      } else {
+        console.error("❌ Erro ao deletar task");
+      }
     } catch (error) {
       console.error("❌ Erro ao deletar task:", error);
     } finally {
@@ -302,14 +154,11 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
 
   const handleStatusChange = async (taskId: string, status: ScheduleStatus) => {
     try {
-      // TEMPORARIAMENTE DESABILITADO - FOCANDO APENAS EM DADOS MOCKUP
-      console.log("🚫 Backend desabilitado - simulando mudança de status");
+      const success = await updateScheduleStatusAction(taskId, status);
 
-      // Simular mudança de status local
-      setSchedules((prev) =>
-        prev.map((task) => (task.id === taskId ? { ...task, status } : task))
-      );
-      console.log("✅ Status atualizado localmente (simulação)");
+      if (!success) {
+        console.error("❌ Erro ao atualizar status");
+      }
     } catch (error) {
       console.error("❌ Erro ao atualizar status:", error);
     }
@@ -317,7 +166,6 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
 
   // Aplicar filtros
   useEffect(() => {
-    console.log("🔍 Aplicando filtros para schedules:", schedules.length);
     let filtered = [...schedules];
 
     // Filtro de busca
@@ -394,10 +242,13 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
   const handleTaskMove = async (taskId: string, newDate: Date) => {
     try {
       const task = schedules.find((s) => s.id === taskId);
-      if (!task) return;
+      if (!task) {
+        console.log("❌ Task não encontrada:", taskId);
+        return;
+      }
 
-      const updatedTask = {
-        ...task,
+      const updateData: UpdateScheduleInput = {
+        id: taskId,
         date: newDate.toISOString().split("T")[0],
         // Manter o mesmo horário se existir, caso contrário usar o dia inteiro
         startTime:
@@ -420,34 +271,14 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
             : undefined,
       };
 
-      // TEMPORARIAMENTE DESABILITADO - FOCANDO APENAS EM DADOS MOCKUP
-      console.log("🚫 Backend desabilitado - simulando movimentação de task");
+      const success = await updateScheduleAction(taskId, updateData);
 
-      // Simular movimentação local
-      setSchedules((prev) =>
-        prev.map((task) => (task.id === taskId ? updatedTask : task))
-      );
-      console.log("✅ Task movida localmente (simulação)");
+      if (!success) {
+        console.error("❌ Erro ao mover task");
+      }
     } catch (error) {
       console.error("❌ Erro ao mover task:", error);
     }
-  };
-
-  // Função para carregar dados mockup no calendário
-  const handleMockDataLoaded = (mockSchedules: Schedule[]) => {
-    console.log(
-      "📦 Carregando dados mockup no calendário:",
-      mockSchedules.length
-    );
-    setSchedules(mockSchedules);
-
-    // Salvar no cache para persistir entre navegações
-    // if (cacheHelpers.schedules) {
-    //   cacheHelpers.schedules.set("all", mockSchedules);
-    // }
-
-    // Voltar para o modo calendário para ver os dados
-    setViewMode("calendar");
   };
 
   if (loading) {
@@ -493,10 +324,6 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
       {/* Content based on view mode */}
       {viewMode === "calendar" && (
         <>
-          {console.log(
-            "🎯 Renderizando calendário com schedules:",
-            schedules.length
-          )}
           <InteractiveCalendar
             schedules={schedules}
             onDayClick={handleDayClick}
@@ -676,13 +503,6 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
         </div>
       )}
 
-      {viewMode === "mockup" && (
-        <MockDataDemo
-          onDataLoaded={handleMockDataLoaded}
-          className="max-w-4xl mx-auto"
-        />
-      )}
-
       {/* Modals */}
       <CreateTaskModal
         isOpen={isCreateModalOpen}
@@ -709,13 +529,6 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
           onClose={() => setIsGlobalSearchOpen(false)}
         />
       )}
-
-      {/* Mock Data Notification */}
-      <MockDataNotification
-        isActive={isMockDataActive}
-        scheduleCount={schedules.length}
-        onClose={() => setShowMockDataNotification(false)}
-      />
     </div>
   );
 }
