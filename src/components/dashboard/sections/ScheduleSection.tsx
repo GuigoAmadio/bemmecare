@@ -4,22 +4,15 @@ import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   Calendar as CalendarIcon,
-  List,
-  BarChart3,
   Clock,
   CheckCircle,
   AlertCircle,
   Plus,
   Users,
-  CalendarDays,
-  Search,
-  Database,
 } from "lucide-react";
 import {
   Schedule,
   ScheduleStatus,
-  ScheduleCategory,
-  SchedulePriority,
   CreateScheduleInput,
   UpdateScheduleInput,
   getScheduleStatusLabel,
@@ -29,13 +22,10 @@ import { useScheduleContext } from "@/context/ScheduleContext";
 import InteractiveCalendar from "../Calendar/InteractiveCalendar";
 import CreateTaskModal from "../Calendar/CreateTaskModal";
 import TaskDetailsModal from "../Calendar/TaskDetailsModal";
-import CalendarFilters, {
-  CalendarFiltersState,
-} from "../Calendar/CalendarFilters";
+import { CalendarFiltersState } from "../Calendar/CalendarFilters";
 import WeeklyView from "../Calendar/WeeklyView";
 import ViewModeSelector from "../Calendar/ViewModeSelector";
 import GlobalSearch from "../Calendar/GlobalSearch";
-import ReminderSystem from "../Calendar/ReminderSystem";
 
 interface ScheduleSectionProps {
   onBack: () => void;
@@ -117,7 +107,10 @@ export default function ScheduleSection({ onBack }: ScheduleSectionProps) {
     setIsDetailsModalOpen(true);
   };
 
-  const handleUpdateTask = async (taskId: string, taskData: UpdateScheduleInput) => {
+  const handleUpdateTask = async (
+    taskId: string,
+    taskData: UpdateScheduleInput
+  ) => {
     try {
       setIsUpdating(true);
 
