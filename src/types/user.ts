@@ -27,4 +27,6 @@ export interface RegisterData {
   lastName: string;
   phone?: string;
   newsletter?: boolean;
+  confirmPassword: string;
+  acceptTerms: boolean | string;
 }

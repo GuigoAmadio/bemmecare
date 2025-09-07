@@ -463,6 +463,15 @@ export const cacheHelpers = {
     invalidate: (key: string) => cacheUtils.delete(`schedules:${key}`),
     invalidateAll: () => cacheUtils.invalidateByTag("schedules"),
   },
+
+  // Cache para pedidos
+  orders: {
+    get: (key: string) => cacheUtils.get(`orders:${key}`),
+    set: (key: string, data: any) =>
+      cacheUtils.set(`orders:${key}`, data, CACHE_CONFIG.PRODUCTS), // Usando mesmo TTL dos produtos
+    invalidate: (key: string) => cacheUtils.delete(`orders:${key}`),
+    invalidateAll: () => cacheUtils.invalidateByTag("orders"),
+  },
 };
 
 export default cacheUtils;

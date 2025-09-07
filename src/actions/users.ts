@@ -8,18 +8,7 @@ import {
 } from "@/lib/server-api";
 import type { User, RegisterData } from "@/types/user";
 import type { AuthUser } from "@/types/auth";
-import {
-  log,
-  handleError,
-  validateId,
-  validateEmail,
-  validatePassword,
-  validatePasswordMatch,
-  validateNonEmptyString,
-  buildQueryParams,
-  getApiCount,
-  getApiSuccessStatus,
-} from "@/utils";
+import { log, handleError, validateId, validateEmail } from "@/utils";
 
 // ==================== CRUD BÁSICO ====================
 

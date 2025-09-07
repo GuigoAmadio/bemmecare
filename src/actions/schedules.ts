@@ -12,19 +12,11 @@ import {
   UpdateScheduleInput,
   GetSchedulesFilters,
   ScheduleResponse,
-  SchedulesListResponse,
   ScheduleStatsResponse,
   ScheduleStats,
   ScheduleStatus,
 } from "@/types/schedule";
-import {
-  log,
-  handleError,
-  validateId,
-  buildQueryParams,
-  getApiCount,
-  getApiSuccessStatus,
-} from "@/utils";
+import { log, handleError, buildQueryParams } from "@/utils";
 import { cacheHelpers } from "@/lib/cache-utils";
 
 // ========================

@@ -7,9 +7,8 @@ import {
   Filter,
   ShoppingCart,
   Eye,
-  Package,
 } from "lucide-react";
-import { Order } from "@/types";
+import { Order } from "@/types/orders";
 import { getOrders } from "@/actions/orders";
 import { cacheHelpers } from "@/lib/cache-utils";
 
@@ -49,6 +48,8 @@ export default function OrdersSection({ onBack }: OrdersSectionProps) {
 
       if (fetchedOrders) {
         setOrders(fetchedOrders);
+        // Salva no cache para próximas consultas
+        cacheHelpers.orders.set("all", fetchedOrders);
       }
     } catch (error) {
       console.error("Erro ao carregar pedidos:", error);
@@ -94,8 +95,9 @@ export default function OrdersSection({ onBack }: OrdersSectionProps) {
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
       order.id.toString().includes(searchTerm) ||
-      order.customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.customer.email.toLowerCase().includes(searchTerm.toLowerCase());
+      order.user?.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.user?.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.user?.email?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesFilter =
       filterStatus === "all" || order.status === filterStatus;
@@ -154,7 +156,7 @@ export default function OrdersSection({ onBack }: OrdersSectionProps) {
             <Filter className="h-4 w-4 text-text-muted" />
             <select
               value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value as any)}
+              onChange={(e) => setFilterStatus(e.target.value as typeof filterStatus)}
               className="px-3 py-2 border border-border rounded-lg bg-background text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
             >
               <option value="all">Todos</option>
@@ -211,10 +213,12 @@ export default function OrdersSection({ onBack }: OrdersSectionProps) {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
                       <div className="text-sm font-medium text-text-primary">
-                        {order.customer.name}
+                        {order.user
+                          ? `${order.user.firstName} ${order.user.lastName}`
+                          : "Cliente não encontrado"}
                       </div>
                       <div className="text-sm text-text-muted">
-                        {order.customer.email}
+                        {order.user?.email || "Email não disponível"}
                       </div>
                     </div>
                   </td>

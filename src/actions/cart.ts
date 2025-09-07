@@ -7,16 +7,8 @@ import {
   serverPatch,
 } from "@/lib/server-api";
 import type { Cart, CartItem, ShippingOption } from "@/types/cart";
-import type { Product, ProductVariant } from "@/types/products";
-import {
-  log,
-  handleError,
-  validateId,
-  validateQuantity,
-  validateNonEmptyString,
-  getApiSuccessStatus,
-  getApiCount,
-} from "@/utils";
+import type { ProductVariant } from "@/types/products";
+import { log, handleError, validateId, validateQuantity } from "@/utils";
 
 // ==================== CARRINHO BÁSICO ====================
 

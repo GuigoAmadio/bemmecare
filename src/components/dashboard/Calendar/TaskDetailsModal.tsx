@@ -659,7 +659,7 @@ export default function TaskDetailsModal({
                 </h3>
               </div>
               <p className="text-gray-600 mb-6">
-                Tem certeza que deseja deletar a task "{task.title}"? Esta ação
+                Tem certeza que deseja deletar a task &quot;{task.title}&quot;? Esta ação
                 não pode ser desfeita.
               </p>
               <div className="flex space-x-3">

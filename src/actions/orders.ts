@@ -1,11 +1,6 @@
 "use server";
 
-import {
-  serverGet,
-  serverPost,
-  serverDelete,
-  serverPatch,
-} from "@/lib/server-api";
+import { serverGet, serverPost, serverPatch } from "@/lib/server-api";
 import type {
   Order,
   OrderFilter,

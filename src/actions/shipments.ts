@@ -16,17 +16,7 @@ import type {
   ShippingQuote,
   TrackingEvent,
 } from "@/types/shipments";
-import {
-  log,
-  handleError,
-  validateId,
-  validateNonEmptyString,
-  validateAmount,
-  buildQueryParams,
-  getApiCount,
-  getApiSuccessStatus,
-  validateBrazilianZipCode,
-} from "@/utils";
+import { log, handleError, validateId, buildQueryParams } from "@/utils";
 
 // ==================== CRUD BÁSICO ====================
 

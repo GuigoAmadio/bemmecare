@@ -9,19 +9,8 @@ import type {
   RegisterInput,
   AuthUser,
 } from "@/types/auth";
-import { serverPost, serverGet, serverPut } from "@/lib/server-api";
+import { serverPost, serverGet } from "@/lib/server-api";
 import { cacheUtils, cacheHelpers } from "@/lib/cache-utils";
-import { extractErrorMessage } from "@/lib/error-utils";
-import {
-  prefetchDashboardStats,
-  prefetchCurrentProfile,
-  prefetchTodayAppointments,
-  prefetchMyAppointments,
-  prefetchEmployees,
-  prefetchAvailableServices,
-  prefetchAllServices,
-} from "@/actions/prefetch";
-import { ApiResponse } from "@/types";
 
 export async function loginAction(
   data: LoginInput

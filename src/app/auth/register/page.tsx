@@ -24,7 +24,9 @@ export default function RegisterPage() {
   const { register, isLoading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState<RegisterData & { confirmPassword: string }>({
+  const [formData, setFormData] = useState<
+    RegisterData & { confirmPassword: string }
+  >({
     firstName: "",
     lastName: "",
     email: "",
@@ -34,7 +36,9 @@ export default function RegisterPage() {
     acceptTerms: false,
     newsletter: false,
   });
-  const [errors, setErrors] = useState<Partial<RegisterData & { confirmPassword: string }>>({});
+  const [errors, setErrors] = useState<
+    Partial<RegisterData & { confirmPassword: string }>
+  >({});
 
   const handleInputChange = (
     field: keyof (RegisterData & { confirmPassword: string }),
@@ -55,7 +59,7 @@ export default function RegisterPage() {
   };
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<RegisterData & { confirmPassword: string }> = {};
+    const newErrors: Partial<RegisterData> = {};
 
     if (!formData.firstName.trim()) {
       newErrors.firstName = "Nome é obrigatório";
@@ -76,7 +80,8 @@ export default function RegisterPage() {
     } else if (formData.password.length < 8) {
       newErrors.password = "Senha deve ter pelo menos 8 caracteres";
     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = "Senha deve conter ao menos 1 letra maiúscula, 1 minúscula e 1 número";
+      newErrors.password =
+        "Senha deve conter ao menos 1 letra maiúscula, 1 minúscula e 1 número";
     }
 
     if (!formData.confirmPassword) {
@@ -100,16 +105,21 @@ export default function RegisterPage() {
   const formatPhone = (value: string) => {
     // Remove all non-numeric characters
     const numbers = value.replace(/\D/g, "");
-    
+
     // Apply mask
     if (numbers.length <= 2) {
       return `(${numbers}`;
     } else if (numbers.length <= 6) {
       return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
     } else if (numbers.length <= 10) {
-      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(
+        6
+      )}`;
     } else {
-      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(
+        7,
+        11
+      )}`;
     }
   };
 
@@ -125,12 +135,10 @@ export default function RegisterPage() {
 
     try {
       await register({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
+        name: formData.firstName,
         email: formData.email,
         password: formData.password,
-        phone: formData.phone,
-        newsletter: formData.newsletter,
+        phone: formData.phone ?? undefined,
       });
 
       // Redirect to dashboard after successful registration
@@ -196,7 +204,10 @@ export default function RegisterPage() {
             {/* Nome e Sobrenome */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-text-primary mb-2">
+                <label
+                  htmlFor="firstName"
+                  className="block text-sm font-medium text-text-primary mb-2"
+                >
                   Nome *
                 </label>
                 <div className="relative">
@@ -208,8 +219,12 @@ export default function RegisterPage() {
                     type="text"
                     placeholder="João"
                     value={formData.firstName}
-                    onChange={(e) => handleInputChange("firstName", e.target.value)}
-                    className={`pl-10 ${errors.firstName ? "border-error focus:border-error" : ""}`}
+                    onChange={(e) =>
+                      handleInputChange("firstName", e.target.value)
+                    }
+                    className={`pl-10 ${
+                      errors.firstName ? "border-error focus:border-error" : ""
+                    }`}
                     autoComplete="given-name"
                   />
                 </div>
@@ -219,7 +234,10 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-text-primary mb-2">
+                <label
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-text-primary mb-2"
+                >
                   Sobrenome *
                 </label>
                 <Input
@@ -227,8 +245,12 @@ export default function RegisterPage() {
                   type="text"
                   placeholder="Silva"
                   value={formData.lastName}
-                  onChange={(e) => handleInputChange("lastName", e.target.value)}
-                  className={`${errors.lastName ? "border-error focus:border-error" : ""}`}
+                  onChange={(e) =>
+                    handleInputChange("lastName", e.target.value)
+                  }
+                  className={`${
+                    errors.lastName ? "border-error focus:border-error" : ""
+                  }`}
                   autoComplete="family-name"
                 />
                 {errors.lastName && (
@@ -239,7 +261,10 @@ export default function RegisterPage() {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-text-primary mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-text-primary mb-2"
+              >
                 Email *
               </label>
               <div className="relative">
@@ -252,7 +277,9 @@ export default function RegisterPage() {
                   placeholder="joao@email.com"
                   value={formData.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
-                  className={`pl-10 ${errors.email ? "border-error focus:border-error" : ""}`}
+                  className={`pl-10 ${
+                    errors.email ? "border-error focus:border-error" : ""
+                  }`}
                   autoComplete="email"
                 />
               </div>
@@ -263,7 +290,10 @@ export default function RegisterPage() {
 
             {/* Telefone */}
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-text-primary mb-2">
+              <label
+                htmlFor="phone"
+                className="block text-sm font-medium text-text-primary mb-2"
+              >
                 Telefone
               </label>
               <div className="relative">
@@ -276,7 +306,9 @@ export default function RegisterPage() {
                   placeholder="(11) 99999-9999"
                   value={formData.phone}
                   onChange={(e) => handlePhoneChange(e.target.value)}
-                  className={`pl-10 ${errors.phone ? "border-error focus:border-error" : ""}`}
+                  className={`pl-10 ${
+                    errors.phone ? "border-error focus:border-error" : ""
+                  }`}
                   autoComplete="tel"
                 />
               </div>
@@ -287,7 +319,10 @@ export default function RegisterPage() {
 
             {/* Senha */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-text-primary mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-text-primary mb-2"
+              >
                 Senha *
               </label>
               <div className="relative">
@@ -299,8 +334,12 @@ export default function RegisterPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={formData.password}
-                  onChange={(e) => handleInputChange("password", e.target.value)}
-                  className={`pl-10 pr-10 ${errors.password ? "border-error focus:border-error" : ""}`}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
+                  className={`pl-10 pr-10 ${
+                    errors.password ? "border-error focus:border-error" : ""
+                  }`}
                   autoComplete="new-password"
                 />
                 <button
@@ -315,28 +354,39 @@ export default function RegisterPage() {
                   )}
                 </button>
               </div>
-              
+
               {/* Password Strength Indicator */}
               {formData.password && (
                 <div className="mt-2">
                   <div className="flex items-center justify-between text-sm mb-1">
                     <span className="text-text-muted">Força da senha:</span>
-                    <span className={`font-medium ${
-                      passwordStrength(formData.password) <= 2 ? "text-error" :
-                      passwordStrength(formData.password) <= 3 ? "text-warning" : "text-success"
-                    }`}>
+                    <span
+                      className={`font-medium ${
+                        passwordStrength(formData.password) <= 2
+                          ? "text-error"
+                          : passwordStrength(formData.password) <= 3
+                          ? "text-warning"
+                          : "text-success"
+                      }`}
+                    >
                       {getStrengthText(passwordStrength(formData.password))}
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className={`h-2 rounded-full transition-all duration-300 ${getStrengthColor(passwordStrength(formData.password))}`}
-                      style={{ width: `${(passwordStrength(formData.password) / 5) * 100}%` }}
+                      className={`h-2 rounded-full transition-all duration-300 ${getStrengthColor(
+                        passwordStrength(formData.password)
+                      )}`}
+                      style={{
+                        width: `${
+                          (passwordStrength(formData.password) / 5) * 100
+                        }%`,
+                      }}
                     ></div>
                   </div>
                 </div>
               )}
-              
+
               {errors.password && (
                 <p className="mt-1 text-sm text-error">{errors.password}</p>
               )}
@@ -344,7 +394,10 @@ export default function RegisterPage() {
 
             {/* Confirmar Senha */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-text-primary mb-2">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-text-primary mb-2"
+              >
                 Confirmar Senha *
               </label>
               <div className="relative">
@@ -356,8 +409,14 @@ export default function RegisterPage() {
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={formData.confirmPassword}
-                  onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-                  className={`pl-10 pr-10 ${errors.confirmPassword ? "border-error focus:border-error" : ""}`}
+                  onChange={(e) =>
+                    handleInputChange("confirmPassword", e.target.value)
+                  }
+                  className={`pl-10 pr-10 ${
+                    errors.confirmPassword
+                      ? "border-error focus:border-error"
+                      : ""
+                  }`}
                   autoComplete="new-password"
                 />
                 <button
@@ -372,14 +431,17 @@ export default function RegisterPage() {
                   )}
                 </button>
               </div>
-              {formData.confirmPassword && formData.password === formData.confirmPassword && (
-                <div className="mt-1 flex items-center text-success text-sm">
-                  <CheckCircle className="h-4 w-4 mr-1" />
-                  Senhas coincidem
-                </div>
-              )}
+              {formData.confirmPassword &&
+                formData.password === formData.confirmPassword && (
+                  <div className="mt-1 flex items-center text-success text-sm">
+                    <CheckCircle className="h-4 w-4 mr-1" />
+                    Senhas coincidem
+                  </div>
+                )}
               {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-error">{errors.confirmPassword}</p>
+                <p className="mt-1 text-sm text-error">
+                  {errors.confirmPassword}
+                </p>
               )}
             </div>
 
@@ -388,17 +450,25 @@ export default function RegisterPage() {
               <label className="flex items-start">
                 <input
                   type="checkbox"
-                  checked={formData.acceptTerms}
-                  onChange={(e) => handleInputChange("acceptTerms", e.target.checked)}
+                  checked={formData.acceptTerms as boolean}
+                  onChange={(e) =>
+                    handleInputChange("acceptTerms", e.target.checked)
+                  }
                   className="h-4 w-4 text-primary focus:ring-primary border-border rounded mt-0.5"
                 />
                 <span className="ml-2 text-sm text-text-muted">
                   Eu aceito os{" "}
-                  <Link href="/termos" className="text-primary hover:text-primary/80">
+                  <Link
+                    href="/termos"
+                    className="text-primary hover:text-primary/80"
+                  >
                     Termos de Uso
                   </Link>{" "}
                   e a{" "}
-                  <Link href="/privacidade" className="text-primary hover:text-primary/80">
+                  <Link
+                    href="/privacidade"
+                    className="text-primary hover:text-primary/80"
+                  >
                     Política de Privacidade
                   </Link>
                 </span>
@@ -411,7 +481,9 @@ export default function RegisterPage() {
                 <input
                   type="checkbox"
                   checked={formData.newsletter}
-                  onChange={(e) => handleInputChange("newsletter", e.target.checked)}
+                  onChange={(e) =>
+                    handleInputChange("newsletter", e.target.checked)
+                  }
                   className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                 />
                 <span className="ml-2 text-sm text-text-muted">
@@ -447,7 +519,9 @@ export default function RegisterPage() {
                 <div className="w-full border-t border-border"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-text-muted">Ou cadastre-se com</span>
+                <span className="px-2 bg-white text-text-muted">
+                  Ou cadastre-se com
+                </span>
               </div>
             </div>
 

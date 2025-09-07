@@ -53,7 +53,13 @@ export default function ReminderSystem({
       const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
       // Task atrasada
-      if (timeDiff < 0 && schedule.status !== ScheduleStatus.COMPLETED) {
+      // Corrigido: checar se a task está atrasada e não está concluída nem cancelada
+      if (
+        timeDiff < 0 &&
+        (schedule.status === ScheduleStatus.PENDING ||
+          schedule.status === ScheduleStatus.IN_PROGRESS ||
+          schedule.status === ScheduleStatus.POSTPONED)
+      ) {
         newNotifications.push({
           id: `overdue-${schedule.id}-${Date.now()}`,
           schedule,
