@@ -54,17 +54,20 @@ export default function ProductCard({
   return (
     <Card
       className={clsx(
-        "group relative overflow-hidden transition-all duration-300 hover:shadow-2xl",
-        "transform hover:-translate-y-2 cursor-pointer",
+        "h-[480px] w-full group relative overflow-hidden transition-all duration-300 hover:shadow-card",
+        "cursor-pointer flex flex-col hover:bg-white/50 hover:translate-y-[-10px]",
         className
       )}
       padding="none"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link href={`/catalogo/produto/${product.id}`}>
+      <Link
+        href={`/catalogo/produto/${product.id}`}
+        className="flex flex-col h-full"
+      >
         {/* Image Container */}
-        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-background-secondary to-background">
+        <div className="relative h-64 w-full overflow-hidden bg-gradient-to-br from-background-secondary to-background flex-shrink-0">
           <Image
             src={product.image}
             alt={product.name}
@@ -155,57 +158,63 @@ export default function ProductCard({
         </div>
 
         {/* Content */}
-        <div className="p-5 space-y-3">
-          {/* Category */}
-          <p className="text-xs text-primary font-medium uppercase tracking-wider">
-            {product.category.name}
-          </p>
+        <div className="p-5 flex-1 flex flex-col justify-between">
+          {/* Top Section */}
+          <div className="space-y-3">
+            {/* Category */}
+            <p className="text-xs text-primary font-medium uppercase tracking-wider">
+              {product.category.name}
+            </p>
 
-          {/* Product Name */}
-          <h3 className="font-semibold text-text-primary line-clamp-2 hover:text-primary transition-colors group-hover:text-primary leading-tight">
-            {product.name}
-          </h3>
+            {/* Product Name */}
+            <h3 className="font-semibold text-text-primary line-clamp-2 hover:text-primary transition-colors group-hover:text-primary leading-tight min-h-[2.5rem]">
+              {product.name}
+            </h3>
 
-          {/* Rating */}
-          {product.rating > 0 && (
-            <div className="flex items-center gap-2">
-              <div className="flex items-center">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <Star
-                    key={star}
-                    className={clsx(
-                      "h-3.5 w-3.5",
-                      star <= product.rating
-                        ? "text-warning fill-current"
-                        : "text-border"
-                    )}
-                  />
-                ))}
+            {/* Rating */}
+            {product.rating > 0 && (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <Star
+                      key={star}
+                      className={clsx(
+                        "h-3.5 w-3.5",
+                        star <= product.rating
+                          ? "text-warning fill-current"
+                          : "text-border"
+                      )}
+                    />
+                  ))}
+                </div>
+                <span className="text-xs text-text-secondary font-medium">
+                  ({product.reviewCount})
+                </span>
               </div>
-              <span className="text-xs text-text-secondary font-medium">
-                ({product.reviewCount})
-              </span>
-            </div>
-          )}
-
-          {/* Price */}
-          <div className="flex items-baseline gap-3 pt-1">
-            <span className="text-xl font-bold text-primary">
-              R$ {product.price.toFixed(2)}
-            </span>
-            {product.oldPrice && (
-              <span className="text-sm text-text-muted line-through">
-                R$ {product.oldPrice.toFixed(2)}
-              </span>
             )}
           </div>
 
-          {/* Stock Info */}
-          {product.stock <= 10 && product.stock > 0 && (
-            <p className="text-xs text-warning font-medium bg-warning/10 px-2 py-1 rounded-full inline-block">
-              Apenas {product.stock} em estoque
-            </p>
-          )}
+          {/* Bottom Section */}
+          <div className="space-y-3 pt-2">
+            {/* Price */}
+            <div className="flex items-baseline gap-3">
+              <span className="text-xl font-bold text-primary">
+                R$ {product.price.toFixed(2)}
+              </span>
+              {product.oldPrice && (
+                <span className="text-sm text-text-muted line-through">
+                  R$ {product.oldPrice.toFixed(2)}
+                </span>
+              )}
+            </div>
+
+            {/* Stock Info */}
+            {product.stock <= 10 && product.stock > 0 && (
+              <p className="text-xs text-warning font-medium bg-warning/10 px-2 py-1 rounded-full inline-block">
+                Apenas {product.stock} em estoque
+              </p>
+            )}
+          </div>
         </div>
       </Link>
     </Card>

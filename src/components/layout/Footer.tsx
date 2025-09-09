@@ -14,37 +14,55 @@ export default function Footer() {
     <footer className="bg-gradient-to-b from-background-secondary to-background border-t border-border">
       <div className="container mx-auto px-6">
         {/* Main Footer */}
-        <div className="py-16">
+        <div className="py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Brand */}
+            {/* Brand + Newsletter */}
             <div className="col-span-1 md:col-span-2 lg:col-span-1">
-              <Link href="/" className="inline-block mb-6">
+              <Link href="/" className="inline-block mb-4">
                 <span className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                   BemmeCare
                 </span>
               </Link>
-              <p className="text-text-secondary mb-6 leading-relaxed">
+              <p className="text-text-secondary mb-6 leading-relaxed text-sm">
                 Sua experiência de compra online perfeita. Produtos de qualidade
                 com entrega rápida e segura em todo o Brasil.
               </p>
-              <div className="flex gap-4">
+
+              {/* Newsletter integrada */}
+              <div className="mb-6">
+                <h4 className="text-sm font-semibold text-text-primary mb-3">
+                  📧 Receba nossas ofertas
+                </h4>
+                <div className="space-y-3">
+                  <input
+                    type="email"
+                    placeholder="Seu melhor e-mail"
+                    className="w-full px-3 py-2 text-sm border border-border rounded-lg bg-background text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+                  />
+                  <button className="w-full px-4 py-2 bg-gradient-to-r from-primary to-primary-light text-white text-sm font-semibold rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                    Inscrever-se
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
                 <a
                   href="#"
-                  className="flex items-center justify-center w-10 h-10 bg-primary/10 hover:bg-primary hover:text-white rounded-lg transition-all duration-300 text-primary"
+                  className="flex items-center justify-center w-9 h-9 bg-primary/10 hover:bg-primary hover:text-white rounded-lg transition-all duration-300 text-primary"
                 >
-                  <Facebook className="h-5 w-5" />
+                  <Facebook className="h-4 w-4" />
                 </a>
                 <a
                   href="#"
-                  className="flex items-center justify-center w-10 h-10 bg-primary/10 hover:bg-primary hover:text-white rounded-lg transition-all duration-300 text-primary"
+                  className="flex items-center justify-center w-9 h-9 bg-primary/10 hover:bg-primary hover:text-white rounded-lg transition-all duration-300 text-primary"
                 >
-                  <Instagram className="h-5 w-5" />
+                  <Instagram className="h-4 w-4" />
                 </a>
                 <a
                   href="#"
-                  className="flex items-center justify-center w-10 h-10 bg-primary/10 hover:bg-primary hover:text-white rounded-lg transition-all duration-300 text-primary"
+                  className="flex items-center justify-center w-9 h-9 bg-primary/10 hover:bg-primary hover:text-white rounded-lg transition-all duration-300 text-primary"
                 >
-                  <Twitter className="h-5 w-5" />
+                  <Twitter className="h-4 w-4" />
                 </a>
               </div>
             </div>
@@ -146,29 +164,6 @@ export default function Footer() {
                   <span>São Paulo, SP - Brasil</span>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Newsletter */}
-        <div className="py-8 border-t border-border">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold text-text-primary mb-4">
-              📧 Receba nossas ofertas exclusivas
-            </h3>
-            <p className="text-text-secondary mb-6 max-w-2xl mx-auto">
-              Seja o primeiro a saber sobre promoções, lançamentos e ofertas
-              especiais. Inscreva-se em nossa newsletter!
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Seu melhor e-mail"
-                className="flex-1 px-4 py-3 border border-border rounded-lg bg-background text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
-              />
-              <button className="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300">
-                Inscrever-se
-              </button>
             </div>
           </div>
         </div>

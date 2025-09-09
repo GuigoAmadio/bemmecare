@@ -35,9 +35,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               variant === "primary",
             "bg-secondary text-white hover:bg-secondary/90":
               variant === "secondary",
-            "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-white":
+            "border-2 border-primary bg-transparent text-primary hover:bg-primary":
               variant === "outline",
-            "hover:bg-background-secondary text-text-primary": variant === "ghost",
+            "hover:bg-background-secondary text-text-primary":
+              variant === "ghost",
             "text-primary hover:underline": variant === "link",
             "bg-background border border-border text-text-primary hover:bg-background-secondary":
               variant === "default",

@@ -15,48 +15,43 @@ export default {
       },
       colors: {
         background: {
-          DEFAULT: "var(--color-background)",
-          secondary: "var(--color-background-secondary)",
-          opposite: "var(--color-background-opposite)",
-          weak: "var(--color-background-weak)",
+          DEFAULT: "#fefdfb",
+          secondary: "#f7f5f2",
+          tertiary: "#f0ede8",
         },
         text: {
-          primary: "var(--color-text-primary)",
-          secondary: "var(--color-text-secondary)",
-          muted: "var(--color-text-muted)",
-          strong: "var(--color-text-strong)",
+          primary: "#2d2a24",
+          secondary: "#6b6a65",
+          muted: "#9a9893",
         },
         primary: {
-          DEFAULT: "var(--color-primary)",
+          DEFAULT: "#6b7c32",
+          light: "#8b966c",
+          dark: "#4f5a25",
         },
         secondary: {
-          DEFAULT: "var(--color-secondary)",
+          DEFAULT: "#a8a39a",
         },
         accent: {
-          DEFAULT: "var(--color-accent)",
-        },
-        muted: {
-          DEFAULT: "var(--color-muted)",
+          DEFAULT: "#c4b5a0",
+          light: "#d4c7b5",
+          dark: "#b5a68f",
         },
         border: {
-          DEFAULT: "var(--color-border)",
-          strong: "var(--color-border-strong)",
+          DEFAULT: "#e8e4dd",
+          light: "#f0ede8",
         },
-        divider: "var(--color-divider)",
-        hover: "var(--color-hover)",
-        pressed: "var(--color-pressed)",
-        focus: "var(--color-focus)",
         success: {
-          DEFAULT: "var(--color-success)",
+          DEFAULT: "#6b7c32",
         },
         warning: {
-          DEFAULT: "var(--color-warning)",
+          DEFAULT: "#c4b5a0",
         },
         error: {
-          DEFAULT: "var(--color-error)",
+          DEFAULT: "#b85450",
         },
         info: {
-          DEFAULT: "var(--color-info)",
+          DEFAULT: "#6b7c32",
         },
       },
       fontFamily: {
@@ -64,6 +59,10 @@ export default {
         body: ["var(--font-inter)", "sans-serif"],
         playfair: ["var(--font-playfair)", "serif"],
         inter: ["var(--font-inter)", "sans-serif"],
+      },
+      backgroundImage: {
+        folha1: "url('/fundo/folha1.svg')",
+        folha2: "url('/fundo/folha2.svg')",
       },
       animation: {
         "fade-in-up": "fadeInUp 0.6s ease-out",

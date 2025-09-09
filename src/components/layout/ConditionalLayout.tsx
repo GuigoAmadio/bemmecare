@@ -28,13 +28,20 @@ export default function ConditionalLayout({
   );
 
   if (!shouldShowLayout) {
-    return <main>{children}</main>;
+    return <main className="bg-background text-text-primary">{children}</main>;
   }
 
   return (
     <>
       <Header />
-      <main>{children}</main>
+      <img
+        src="/fundo/folha2.svg"
+        alt=""
+        className="absolute top-0 left-0 select-none flex justify-start w-48 z-10"
+        draggable={false}
+        aria-hidden="true"
+      />
+      <main className="bg-[#fff5e7] text-text-primary">{children}</main>
       <Footer />
     </>
   );

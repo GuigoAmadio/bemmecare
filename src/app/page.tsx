@@ -1,210 +1,320 @@
-import Link from "next/link";
-import {
-  ShoppingBag,
-  Heart,
-  Truck,
-  Shield,
-  Award,
-  Sparkles,
-  TrendingUp,
-  Users,
-  CheckCircle,
-  Globe,
-  Clock,
-} from "lucide-react";
-import Button from "@/components/ui/Button";
-import Card, { CardContent } from "@/components/ui/Card";
+import HeroSection from "@/components/home/HeroSection";
+import ProductCarousel from "@/components/home/ProductCarousel";
+import MerchantSection from "@/components/home/MerchantSection";
+import NavigationCards from "@/components/home/NavigationCards";
+import CTASection from "@/components/home/CTASection";
+
+// Mock data - em produção, isso viria de uma API
+const mockProducts = [
+  {
+    id: "1",
+    name: "Óleo Essencial de Lavanda",
+    description:
+      "Óleo essencial puro de lavanda, perfeito para relaxamento e aromaterapia",
+    price: 45.9,
+    oldPrice: 59.9,
+    image:
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=300&h=300&fit=crop&crop=center",
+    images: [
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=300&h=300&fit=crop&crop=center",
+      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=300&h=300&fit=crop&crop=center",
+    ],
+    category: {
+      id: "1",
+      name: "Óleos Essenciais",
+      slug: "oleos-essenciais",
+      description: "Óleos essenciais puros",
+      image: "",
+      level: 1,
+      path: "oleos-essenciais",
+      isActive: true,
+      isVisible: true,
+      isFeatured: true,
+      sortOrder: 1,
+      productCount: 15,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    brand: "BemmeCare",
+    rating: 4.8,
+    reviewCount: 124,
+    stock: 15,
+    isFeatured: true,
+    features: ["100% Natural", "Aromaterapia", "Relaxamento"],
+    specifications: {
+      Volume: "10ml",
+      Origem: "França",
+      "Tipo de pele": "Todas",
+      Tipo: "Essencial",
+      Peso: "10g",
+      Uso: "Aromaterapia",
+    },
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: "2",
+    name: "Creme Hidratante Natural",
+    description:
+      "Creme hidratante com ingredientes naturais para todos os tipos de pele",
+    price: 32.5,
+    image:
+      "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=300&h=300&fit=crop&crop=center",
+    images: [
+      "https://images.unsplash.com/photo-1570194065650-d99fb4bedf0a?w=300&h=300&fit=crop&crop=center",
+    ],
+    category: {
+      id: "2",
+      name: "Cuidados com a Pele",
+      slug: "cuidados-pele",
+      description: "Produtos para cuidados com a pele",
+      image: "",
+      level: 1,
+      path: "cuidados-pele",
+      isActive: true,
+      isVisible: true,
+      isFeatured: true,
+      sortOrder: 2,
+      productCount: 25,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    brand: "BemmeCare",
+    rating: 4.6,
+    reviewCount: 89,
+    stock: 8,
+    isFeatured: false,
+    features: [
+      "Hidratação profunda",
+      "Ingredientes naturais",
+      "Para todos os tipos de pele",
+    ],
+    specifications: {
+      Volume: "50ml",
+      "Tipo de pele": "Todas",
+      Origem: "Brasil",
+      Tipo: "Hidratante",
+      Peso: "50g",
+      Uso: "Facial",
+    },
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: "3",
+    name: "Shampoo Orgânico",
+    description: "Shampoo orgânico para cabelos saudáveis e brilhantes",
+    price: 28.9,
+    oldPrice: 35.9,
+    image:
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=300&h=300&fit=crop&crop=center",
+    images: [
+      "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=300&h=300&fit=crop&crop=center",
+    ],
+    category: {
+      id: "3",
+      name: "Cabelos",
+      slug: "cabelos",
+      description: "Produtos para cabelos",
+      image: "",
+      level: 1,
+      path: "cabelos",
+      isActive: true,
+      isVisible: true,
+      isFeatured: true,
+      sortOrder: 3,
+      productCount: 20,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    brand: "BemmeCare",
+    rating: 4.7,
+    reviewCount: 156,
+    stock: 12,
+    isFeatured: true,
+    features: ["Orgânico", "Sem sulfatos", "Para todos os tipos de cabelo"],
+    specifications: {
+      Volume: "300ml",
+      Tipo: "Orgânico",
+      Origem: "Brasil",
+      "Tipo de pele": "Todas",
+      Peso: "300g",
+      Uso: "Capilar",
+    },
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: "4",
+    name: "Sabonete Artesanal",
+    description:
+      "Sabonete artesanal com ingredientes naturais e essências suaves",
+    price: 18.5,
+    image:
+      "https://images.unsplash.com/photo-1556228453-5b3bbaa7b5c3?w=300&h=300&fit=crop&crop=center",
+    images: [
+      "https://images.unsplash.com/photo-1556228453-5b3bbaa7b5c3?w=300&h=300&fit=crop&crop=center",
+    ],
+    category: {
+      id: "4",
+      name: "Higiene",
+      slug: "higiene",
+      description: "Produtos de higiene",
+      image: "",
+      level: 1,
+      path: "higiene",
+      isActive: true,
+      isVisible: true,
+      isFeatured: true,
+      sortOrder: 4,
+      productCount: 30,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    brand: "BemmeCare",
+    rating: 4.9,
+    reviewCount: 203,
+    stock: 25,
+    isFeatured: false,
+    features: ["Artesanal", "Ingredientes naturais", "Essências suaves"],
+    specifications: {
+      Peso: "100g",
+      Tipo: "Artesanal",
+      Origem: "Brasil",
+      "Tipo de pele": "Todas",
+      Volume: "100g",
+      Uso: "Corporal",
+    },
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: "5",
+    name: "Óleo de Coco Virgem",
+    description:
+      "Óleo de coco virgem extraído a frio, ideal para cuidados naturais",
+    price: 42.0,
+    image: "/api/placeholder/300/300",
+    images: ["/api/placeholder/300/300"],
+    category: {
+      id: "5",
+      name: "Óleos Naturais",
+      slug: "oleos-naturais",
+      description: "Óleos naturais",
+      image: "",
+      level: 1,
+      path: "oleos-naturais",
+      isActive: true,
+      isVisible: true,
+      isFeatured: true,
+      sortOrder: 5,
+      productCount: 12,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    brand: "BemmeCare",
+    rating: 4.8,
+    reviewCount: 167,
+    stock: 6,
+    isFeatured: true,
+    features: ["Virgem", "Extraído a frio", "Multiuso"],
+    specifications: {
+      Volume: "200ml",
+      Origem: "Brasil",
+      "Tipo de pele": "Todas",
+      Tipo: "Virgem",
+      Peso: "200g",
+      Uso: "Multiuso",
+    },
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: "6",
+    name: "Máscara Facial",
+    description:
+      "Máscara facial nutritiva com ingredientes naturais para revitalizar a pele",
+    price: 38.9,
+    oldPrice: 48.9,
+    image: "/api/placeholder/300/300",
+    images: ["/api/placeholder/300/300"],
+    category: {
+      id: "2",
+      name: "Cuidados com a Pele",
+      slug: "cuidados-pele",
+      description: "Produtos para cuidados com a pele",
+      image: "",
+      level: 1,
+      path: "cuidados-pele",
+      isActive: true,
+      isVisible: true,
+      isFeatured: true,
+      sortOrder: 2,
+      productCount: 25,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    brand: "BemmeCare",
+    rating: 4.5,
+    reviewCount: 94,
+    stock: 10,
+    isFeatured: false,
+    features: ["Nutritiva", "Ingredientes naturais", "Revitalizante"],
+    specifications: {
+      Volume: "75ml",
+      Uso: "Facial",
+      Origem: "Brasil",
+      "Tipo de pele": "Todas",
+      Tipo: "Nutritiva",
+      Peso: "75g",
+    },
+    isActive: true,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen overflow-hidden">
+    <main className="min-h-screen overflow-hidden relative bg-[#fff5e7]">
+      {/* Folhas decorativas globais */}
+      {/* Importando folha2 para uso como elemento decorativo */}
+
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-background overflow-hidden min-h-screen flex items-center">
-        <div className="absolute inset-0 opacity-50">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5"></div>
-          <div
-            className="absolute top-0 left-0 w-full h-full"
-            style={{
-              backgroundImage: `radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.1) 0%, transparent 50%), radial-gradient(circle at 40% 60%, rgba(16, 185, 129, 0.1) 0%, transparent 50%)`,
-            }}
-          ></div>
-        </div>
+      <HeroSection />
 
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-32 h-32 bg-gradient-to-r from-accent/20 to-primary/20 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-gradient-to-r from-success/20 to-primary/20 rounded-full blur-xl animate-pulse"></div>
+      {/* Produtos Mais Vendidos */}
+      <ProductCarousel
+        title="Produtos Mais Vendidos"
+        subtitle="Os favoritos dos nossos clientes, selecionados especialmente para você"
+        products={mockProducts.slice(0, 6)}
+        showViewAll={true}
+        viewAllHref="/catalogo"
+      />
 
-        <div className="container mx-auto px-6 py-24 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full border border-primary/20 mb-8 backdrop-blur-sm">
-              <Sparkles className="h-5 w-5 text-primary" />
-              <span className="text-primary font-semibold text-sm">
-                ✨ Mais de 10.000 produtos disponíveis
-              </span>
-            </div>
+      {/* Seção sobre Ingredientes Naturais */}
+      <MerchantSection />
 
-            <h1 className="text-5xl md:text-7xl font-bold text-text-primary mb-8 leading-tight">
-              Bem-vindo à{" "}
-              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent font-heading">
-                BemmeCare
-              </span>
-            </h1>
+      {/* Segundo Carrossel de Produtos */}
+      <ProductCarousel
+        title="Novidades da Estação"
+        subtitle="Descubra os lançamentos mais recentes com ingredientes naturais"
+        products={mockProducts.slice(2, 6)}
+        showViewAll={true}
+        viewAllHref="/catalogo?filter=novidades"
+        className="bg-background-secondary"
+      />
 
-            <p className="text-xl md:text-2xl text-text-secondary mb-12 max-w-3xl mx-auto leading-relaxed">
-              Descubra os melhores produtos com{" "}
-              <span className="text-primary font-semibold">
-                qualidade garantida
-              </span>{" "}
-              e entrega rápida.
-              <br className="hidden md:block" />
-              Sua experiência de compra online perfeita começa aqui.
-            </p>
+      {/* Cards de Navegação */}
+      <NavigationCards />
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-              <Link href="/catalogo">
-                <Button
-                  size="lg"
-                  variant="primary"
-                  className="bg-gradient-to-r from-primary to-accent hover:shadow-2xl transform hover:scale-105 transition-all duration-300 shadow-xl"
-                >
-                  <ShoppingBag className="mr-3 h-6 w-6" />
-                  Explorar Produtos
-                </Button>
-              </Link>
-              <Link href="/favoritos">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-2 border-primary/30 hover:border-primary hover:bg-primary/5 transform hover:scale-105 transition-all duration-300 backdrop-blur-sm"
-                >
-                  <Heart className="mr-3 h-6 w-6" />
-                  Meus Favoritos
-                </Button>
-              </Link>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <Card className="bg-white/80 backdrop-blur-sm border border-primary/10 hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-                <CardContent className="p-6 text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl mx-auto mb-4">
-                    <Users className="h-8 w-8 text-primary" />
-                  </div>
-                  <div className="text-3xl font-bold text-text-primary mb-2">
-                    50k+
-                  </div>
-                  <div className="text-text-secondary font-medium">
-                    Clientes Satisfeitos
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/80 backdrop-blur-sm border border-success/10 hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-                <CardContent className="p-6 text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-success/20 to-primary/20 rounded-2xl mx-auto mb-4">
-                    <TrendingUp className="h-8 w-8 text-success" />
-                  </div>
-                  <div className="text-3xl font-bold text-text-primary mb-2">
-                    99.8%
-                  </div>
-                  <div className="text-text-secondary font-medium">
-                    Taxa de Satisfação
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white/80 backdrop-blur-sm border border-accent/10 hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300">
-                <CardContent className="p-6 text-center">
-                  <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-accent/20 to-warning/20 rounded-2xl mx-auto mb-4">
-                    <Clock className="h-8 w-8 text-accent" />
-                  </div>
-                  <div className="text-3xl font-bold text-text-primary mb-2">
-                    24h
-                  </div>
-                  <div className="text-text-secondary font-medium">
-                    Entrega Expressa
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-24 bg-gradient-to-b from-background to-background-secondary">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <div className="inline-block px-4 py-2 bg-primary/10 rounded-full border border-primary/20 mb-6">
-              <span className="text-primary font-semibold text-sm">
-                💎 Experiência Premium
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-6">
-              Por que escolher a <span className="text-primary">BemmeCare</span>
-              ?
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <Card className="bg-gradient-to-br from-white to-primary/5 border border-primary/10 hover:shadow-2xl transform hover:-translate-y-4 transition-all duration-500">
-              <CardContent className="p-8 text-center">
-                <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary/20 to-accent/30 rounded-3xl mx-auto mb-6">
-                  <Truck className="h-10 w-10 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold text-text-primary mb-4">
-                  Entrega Rápida
-                </h3>
-                <p className="text-text-secondary leading-relaxed">
-                  Entrega em todo o Brasil com{" "}
-                  <span className="text-primary font-semibold">
-                    frete grátis
-                  </span>{" "}
-                  para compras acima de R$ 100.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-white to-success/5 border border-success/10 hover:shadow-2xl transform hover:-translate-y-4 transition-all duration-500">
-              <CardContent className="p-8 text-center">
-                <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-success/20 to-primary/30 rounded-3xl mx-auto mb-6">
-                  <Shield className="h-10 w-10 text-success" />
-                </div>
-                <h3 className="text-2xl font-bold text-text-primary mb-4">
-                  Compra Segura
-                </h3>
-                <p className="text-text-secondary leading-relaxed">
-                  Seus dados protegidos com a{" "}
-                  <span className="text-success font-semibold">
-                    mais alta tecnologia
-                  </span>{" "}
-                  de segurança.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-white to-accent/5 border border-accent/10 hover:shadow-2xl transform hover:-translate-y-4 transition-all duration-500">
-              <CardContent className="p-8 text-center">
-                <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-accent/20 to-warning/30 rounded-3xl mx-auto mb-6">
-                  <Award className="h-10 w-10 text-accent" />
-                </div>
-                <h3 className="text-2xl font-bold text-text-primary mb-4">
-                  Qualidade Garantida
-                </h3>
-                <p className="text-text-secondary leading-relaxed">
-                  Produtos selecionados com{" "}
-                  <span className="text-accent font-semibold">
-                    garantia de qualidade
-                  </span>{" "}
-                  e satisfação.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-      </main>
+      {/* Seção CTA */}
+      <CTASection />
+    </main>
   );
 }

@@ -31,8 +31,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning className="light">
-      <body className={`antialiased ${inter.variable} ${playfair.variable}`}>
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body
+        className={`antialiased bg-[#fff5e7] text-text-primary ${inter.variable} ${playfair.variable}`}
+      >
         <NotificationProvider>
           <AuthProvider>
             <ThemeProvider>
