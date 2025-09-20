@@ -74,7 +74,7 @@ export default function CTASection({ className = "" }: CTASectionProps) {
 
           {/* Newsletter Form */}
           {!isSubscribed ? (
-            <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
+            <form onSubmit={handleSubscribe} className="max-w-xl mx-auto">
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex-1">
                   <input
@@ -115,41 +115,6 @@ export default function CTASection({ className = "" }: CTASectionProps) {
               </div>
             </div>
           )}
-
-          {/* Trust Indicators */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl mx-auto mb-3">
-                <span className="text-xl">🔒</span>
-              </div>
-              <h4 className="font-semibold text-text-primary mb-1">
-                100% Seguro
-              </h4>
-              <p className="text-sm text-text-secondary">
-                Seus dados estão protegidos
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-success/20 to-primary/20 rounded-xl mx-auto mb-3">
-                <span className="text-xl">📧</span>
-              </div>
-              <h4 className="font-semibold text-text-primary mb-1">Sem Spam</h4>
-              <p className="text-sm text-text-secondary">
-                Apenas conteúdo relevante
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-accent/20 to-warning/20 rounded-xl mx-auto mb-3">
-                <span className="text-xl">❌</span>
-              </div>
-              <h4 className="font-semibold text-text-primary mb-1">
-                Cancele Quando Quiser
-              </h4>
-              <p className="text-sm text-text-secondary">Sem compromisso</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

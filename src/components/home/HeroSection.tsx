@@ -118,44 +118,7 @@ export default function HeroSection({ className = "" }: HeroSectionProps) {
             </Link>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto animate-fade-in-up py-10">
-            <div className="">
-              <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl mx-auto mb-4">
-                <span className="text-2xl">👥</span>
-              </div>
-              <div className="text-xl font-bold text-text-primary mb-2">
-                50k+
-              </div>
-              <div className="text-text-secondary font-medium">
-                Clientes Satisfeitos
-              </div>
-            </div>
-
-            <div className="">
-              <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-success/20 to-primary/20 rounded-2xl mx-auto mb-4">
-                <span className="text-2xl">⭐</span>
-              </div>
-              <div className="text-xl font-bold text-text-primary mb-2">
-                99.8%
-              </div>
-              <div className="text-text-secondary font-medium">
-                Taxa de Satisfação
-              </div>
-            </div>
-
-            <div className="">
-              <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-accent/20 to-warning/20 rounded-2xl mx-auto mb-4">
-                <span className="text-2xl">🚚</span>
-              </div>
-              <div className="text-xl font-bold text-text-primary mb-2">
-                24h
-              </div>
-              <div className="text-text-secondary font-medium">
-                Entrega Expressa
-              </div>
-            </div>
-          </div>
+          <div className="flex "></div>
         </div>
       </div>
     </section>

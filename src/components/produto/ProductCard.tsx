@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingCart, Star, Eye } from "lucide-react";
@@ -26,6 +26,12 @@ export default function ProductCard({
   const [isLoading, setIsLoading] = useState(false);
   const { addItem } = useCart();
 
+  // Verificar se o produto está nos favoritos ao montar o componente
+  useEffect(() => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    setIsFavorite(favorites.includes(product.id));
+  }, [product.id]);
+
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -44,6 +50,17 @@ export default function ProductCard({
   const handleToggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    let newFavorites;
+
+    if (isFavorite) {
+      newFavorites = favorites.filter((id: string) => id !== product.id);
+    } else {
+      newFavorites = [...favorites, product.id];
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(newFavorites));
     setIsFavorite(!isFavorite);
   };
 
